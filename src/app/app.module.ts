@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
 
 import { AppComponent } from './app.component';
-import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { StoreModule } from '@ngrx/store';
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot({}, {})
+    StoreModule.forRoot({}, {}),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
