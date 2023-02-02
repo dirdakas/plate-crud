@@ -3,5 +3,5 @@ export enum TableColumnsEnum {
   plateNumber = 'plateNumber',
   name = 'name',
   lastName = 'lastName',
-  actions = 'actions'
+  actions = 'actions',
 }

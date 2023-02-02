@@ -1,0 +1,8 @@
+# Add files here to ignore them from prettier formatting
+.out
+cache
+coverage
+dist
+reports
+**/generated/dimml.js
+**/polyfills.ts

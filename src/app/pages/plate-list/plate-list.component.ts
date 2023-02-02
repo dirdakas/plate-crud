@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,12 +12,17 @@ import { select, Store } from '@ngrx/store';
 import { Subject, takeUntil, Observable, tap } from 'rxjs';
 
 import { ITableItem, TableColumnsEnum } from 'src/app/models';
-import { getPlateList, initiatePlateList, isLoading, PlateListState } from 'src/app/state';
+import {
+  getPlateList,
+  initiatePlateList,
+  isLoading,
+  PlateListState,
+} from 'src/app/state';
 
 @Component({
   selector: 'app-plate-list',
   templateUrl: './plate-list.component.html',
-  styleUrls: ['./plate-list.component.scss']
+  styleUrls: ['./plate-list.component.scss'],
 })
 export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort | null = null;
@@ -40,7 +51,7 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         select(getPlateList),
         takeUntil(this.destroy$),
-        tap(list => this.dataSource.data = list)
+        tap(list => (this.dataSource.data = list))
       )
       .subscribe();
   }
@@ -57,7 +68,7 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
   addItem(): void {
     // @TODO: add create modal
     // @TODO: add create func
-    console.log('addItem')
+    console.log('addItem');
   }
 
   editItem(item: ITableItem): void {
@@ -69,6 +80,6 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
   deleteItem(item: ITableItem): void {
     // @TODO: add confirmation
     // @TODO: add removal
-    console.log('deleteItem', item)
+    console.log('deleteItem', item);
   }
 }

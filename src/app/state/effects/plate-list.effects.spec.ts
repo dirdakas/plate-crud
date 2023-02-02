@@ -18,7 +18,11 @@ describe('PlateListEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PlateListEffects, provideMockActions(() => actions$), provideMockStore()],
+      providers: [
+        PlateListEffects,
+        provideMockActions(() => actions$),
+        provideMockStore(),
+      ],
     });
     mockStore = TestBed.inject(MockStore);
     effects = TestBed.inject(PlateListEffects);
@@ -35,19 +39,26 @@ describe('PlateListEffects', () => {
   });
 
   describe('getPrivateInitialData$', () => {
-    it('should fetch data and re-map it', marbles(m => {
-      const action: Action = initiatePlateList();
-      const completion = getPlateListSuccess({
-        payload: dataFile.dataList?.map((item: IPlateDetails, index: number) => ({...item, index})) || [],
-        type: 'aa'
-      } as any);
+    it(
+      'should fetch data and re-map it',
+      marbles(m => {
+        const action: Action = initiatePlateList();
+        const completion = getPlateListSuccess({
+          payload:
+            dataFile.dataList?.map((item: IPlateDetails, index: number) => ({
+              ...item,
+              index,
+            })) || [],
+          type: 'aa',
+        } as any);
 
-      actions$ = m.hot('--a', { a: action });
-      const expected = m.cold('--b', {
-        b: completion
-      });
+        actions$ = m.hot('--a', { a: action });
+        const expected = m.cold('--b', {
+          b: completion,
+        });
 
-      m.expect(effects.initiatePlateList$).toBeObservable(expected);
-    }));
+        m.expect(effects.initiatePlateList$).toBeObservable(expected);
+      })
+    );
   });
 });

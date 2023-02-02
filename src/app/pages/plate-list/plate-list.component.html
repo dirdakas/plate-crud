@@ -1,33 +1,38 @@
 <div class="plate-list-page">
   <app-spinner *ngIf="isLoading$ | async"></app-spinner>
 
-  <button mat-raised-button color="primary" class="add-new-plate-item" (click)="addItem()">Add plate</button>
+  <button
+    mat-raised-button
+    color="primary"
+    class="add-new-plate-item"
+    (click)="addItem()">
+    Add plate
+  </button>
 
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
-  
       <ng-container [matColumnDef]="tableColumnsEnum.index">
-        <th mat-header-cell *matHeaderCellDef> No. </th>
-        <td mat-cell *matCellDef="let element"> {{element.index + 1}} </td>
+        <th mat-header-cell *matHeaderCellDef>No.</th>
+        <td mat-cell *matCellDef="let element">{{ element.index + 1 }}</td>
       </ng-container>
-  
+
       <ng-container [matColumnDef]="tableColumnsEnum.plateNumber">
-        <th mat-header-cell *matHeaderCellDef> Plate </th>
-        <td mat-cell *matCellDef="let element"> {{element.plate}} </td>
+        <th mat-header-cell *matHeaderCellDef>Plate</th>
+        <td mat-cell *matCellDef="let element">{{ element.plate }}</td>
       </ng-container>
-  
+
       <ng-container [matColumnDef]="tableColumnsEnum.name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
       </ng-container>
-  
+
       <ng-container [matColumnDef]="tableColumnsEnum.lastName">
-        <th mat-header-cell *matHeaderCellDef> Last Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+        <th mat-header-cell *matHeaderCellDef>Last Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
       </ng-container>
 
       <ng-container [matColumnDef]="tableColumnsEnum.actions">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element">
           <button mat-icon-button (click)="editItem(element)">
             <mat-icon>edit</mat-icon>
@@ -37,13 +42,12 @@
           </button>
         </td>
       </ng-container>
-  
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-  
-    <mat-paginator [pageSizeOptions]="pageSizeOptions"
-                   showFirstLastButtons>
+
+    <mat-paginator [pageSizeOptions]="pageSizeOptions" showFirstLastButtons>
     </mat-paginator>
   </div>
 </div>

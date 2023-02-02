@@ -14,10 +14,8 @@ describe('PlateListComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        
-      ],
-      declarations: [ PlateListComponent ],
+      imports: [],
+      declarations: [PlateListComponent],
       providers: [
         provideMockStore<unknown>({
           initialState: {
@@ -26,9 +24,8 @@ describe('PlateListComponent', () => {
           },
         }),
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
     store = TestBed.inject(MockStore);
     spyOn(store, 'dispatch');
@@ -59,7 +56,7 @@ describe('PlateListComponent', () => {
         lastName: 'lastName',
         name: 'name',
         plate: 'plate',
-        index: 0
+        index: 0,
       };
 
       store.overrideSelector(getPlateList, [mockedPlateItem]);

@@ -12,26 +12,24 @@ import { AppComponent } from './app.component';
 import { PlateListModule } from './pages/plate-list/plate-list.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     CommonModule,
     RouterModule.forRoot([
       {
         path: '',
-        loadChildren: () => import('./pages').then((m) => m.PlateListModule)
-      }
+        loadChildren: () => import('./pages').then(m => m.PlateListModule),
+      },
     ]),
-    StoreModule.forRoot({},{}),
+    StoreModule.forRoot({}, {}),
     BrowserAnimationsModule,
     MatTableModule,
     MatPaginatorModule,
     EffectsModule.forRoot([]),
-    PlateListModule
+    PlateListModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -9,12 +9,14 @@ export enum PlateListTypes {
 }
 
 export const initiatePlateList: ActionCreator<
-  PlateListTypes.InitiatePlateList, () => TypedAction<PlateListTypes.InitiatePlateList>
+  PlateListTypes.InitiatePlateList,
+  () => TypedAction<PlateListTypes.InitiatePlateList>
 > = createAction(PlateListTypes.InitiatePlateList);
 
 export const getPlateListSuccess: ActionCreator<
-  PlateListTypes.GetPlateListSuccess, (props: {
-    payload: ITableItem []
+  PlateListTypes.GetPlateListSuccess,
+  (props: {
+    payload: ITableItem[];
   }) => TypedAction<PlateListTypes.GetPlateListSuccess>
 > = createAction(
   PlateListTypes.GetPlateListSuccess,

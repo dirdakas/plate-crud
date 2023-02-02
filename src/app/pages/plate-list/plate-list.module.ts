@@ -9,26 +9,30 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { PlateListComponent } from './plate-list.component';
-import { PlateListEffects, plateListFeatureKey, plateListReducer } from './../../state';
+import {
+  PlateListEffects,
+  plateListFeatureKey,
+  plateListReducer,
+} from './../../state';
 import { SpinnerModule } from 'src/app/components/spinner/spinner.module';
 
 @NgModule({
-  declarations: [ PlateListComponent ],
+  declarations: [PlateListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
       {
         path: '',
-        component: PlateListComponent
+        component: PlateListComponent,
       },
     ]),
     MatTableModule,
     MatPaginatorModule,
-    StoreModule.forFeature( plateListFeatureKey, plateListReducer),
+    StoreModule.forFeature(plateListFeatureKey, plateListReducer),
     EffectsModule.forFeature([PlateListEffects]),
     SpinnerModule,
     MatButtonModule,
     MatIconModule,
-  ]
+  ],
 })
-export class PlateListModule { }
+export class PlateListModule {}

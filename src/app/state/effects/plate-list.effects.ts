@@ -10,14 +10,20 @@ import { IPlateDetails } from 'src/app/models/plate-details.model';
 
 @Injectable()
 export class PlateListEffects {
-  constructor(
-    private actions$: Actions
-  ) {}
+  constructor(private actions$: Actions) {}
 
   initiatePlateList$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(initiatePlateList),
-      map(() => getPlateListSuccess({ payload: dataFile.dataList?.map((item: IPlateDetails, index: number) => ({...item, index})) || [] }))
+      map(() =>
+        getPlateListSuccess({
+          payload:
+            dataFile.dataList?.map((item: IPlateDetails, index: number) => ({
+              ...item,
+              index,
+            })) || [],
+        })
+      )
     )
   );
 }
