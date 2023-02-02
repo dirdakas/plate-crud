@@ -5,6 +5,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 import { PlateListComponent } from './plate-list.component';
 import { PlateListEffects, plateListFeatureKey, plateListReducer } from './../../state';
@@ -25,6 +27,8 @@ import { SpinnerModule } from 'src/app/components/spinner/spinner.module';
     StoreModule.forFeature( plateListFeatureKey, plateListReducer),
     EffectsModule.forFeature([PlateListEffects]),
     SpinnerModule,
+    MatButtonModule,
+    MatIconModule,
   ]
 })
 export class PlateListModule { }

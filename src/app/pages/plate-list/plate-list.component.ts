@@ -17,10 +17,17 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort | null = null;
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
-  displayedColumns: string[] = [TableColumnsEnum.index, TableColumnsEnum.plateNumber, TableColumnsEnum.name, TableColumnsEnum.lastName];
+  displayedColumns: string[] = [
+    TableColumnsEnum.index,
+    TableColumnsEnum.plateNumber,
+    TableColumnsEnum.name,
+    TableColumnsEnum.lastName,
+    TableColumnsEnum.actions,
+  ];
   dataSource = new MatTableDataSource<ITableItem>();
   pageSizeOptions = [5, 10, 20];
   isLoading$: Observable<boolean> = this.store$.pipe(select(isLoading));
+  tableColumnsEnum = TableColumnsEnum;
 
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -45,5 +52,23 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  addItem(): void {
+    // @TODO: add create modal
+    // @TODO: add create func
+    console.log('addItem')
+  };
+
+  editItem(item: ITableItem): void {
+    // @TODO: add edit modal
+    // @TODO: add edit func
+    console.log('editItem', item);
+  }
+
+  deleteItem(item: ITableItem): void {
+    // @TODO: add confirmation
+    // @TODO: add removal
+    console.log('deleteItem', item)
   }
 }
