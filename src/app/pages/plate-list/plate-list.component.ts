@@ -1,31 +1,49 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
+import { select, Store } from '@ngrx/store';
+import { Subject, takeUntil, Observable, tap } from 'rxjs';
 
-import { IPlateDetails } from 'src/app/models/plate-details.model';
-import { TableColumnsEnum } from 'src/app/models/table-columns.enum';
-import { ITableItem } from 'src/app/models/table-item.model';
-import dataFile from 'src/assets/data.json';
+import { ITableItem, TableColumnsEnum } from 'src/app/models';
+import { getPlateList, initiatePlateList, isLoading, PlateListState } from 'src/app/state';
 
 @Component({
   selector: 'app-plate-list',
   templateUrl: './plate-list.component.html',
   styleUrls: ['./plate-list.component.scss']
 })
-export class PlateListComponent implements OnInit, AfterViewInit {
+export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort | null = null;
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
   displayedColumns: string[] = [TableColumnsEnum.index, TableColumnsEnum.plateNumber, TableColumnsEnum.name, TableColumnsEnum.lastName];
   dataSource = new MatTableDataSource<ITableItem>();
   pageSizeOptions = [5, 10, 20];
+  isLoading$: Observable<boolean> = this.store$.pipe(select(isLoading));
+
+  private destroy$: Subject<void> = new Subject<void>();
+
+  constructor(private store$: Store<PlateListState>) {}
 
   ngOnInit(): void {
-    this.dataSource.data = dataFile.dataList.map((item: IPlateDetails, index: number) => ({...item, index}));
+    this.store$.dispatch(initiatePlateList());
+
+    this.store$
+      .pipe(
+        select(getPlateList),
+        takeUntil(this.destroy$),
+        tap(list => this.dataSource.data = list)
+      )
+      .subscribe();
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

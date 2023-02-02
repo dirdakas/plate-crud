@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MatTableModule } from '@angular/material/table';
@@ -8,7 +10,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppComponent } from './app.component';
 import { PlateListModule } from './pages/plate-list/plate-list.module';
-import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     RouterModule.forRoot([
       {
         path: '',
@@ -27,7 +29,7 @@ import { RouterModule } from '@angular/router';
     MatTableModule,
     MatPaginatorModule,
     EffectsModule.forRoot([]),
-    PlateListModule,
+    PlateListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

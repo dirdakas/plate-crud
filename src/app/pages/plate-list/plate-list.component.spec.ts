@@ -1,20 +1,37 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
+import { ITableItem } from 'src/app/models';
+import { getPlateList, initiatePlateList } from 'src/app/state';
 import { PlateListComponent } from './plate-list.component';
-import dataFile from 'src/assets/data.json';
-import { IPlateDetails } from 'src/app/models/plate-details.model';
 
 describe('PlateListComponent', () => {
   let component: PlateListComponent;
   let fixture: ComponentFixture<PlateListComponent>;
 
+  let store: MockStore<{}>;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        
+      ],
       declarations: [ PlateListComponent ],
+      providers: [
+        provideMockStore<{}>({
+          initialState: {
+            isLoading: false,
+            isLoaded: false,
+          },
+        }),
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
+
+    store = TestBed.inject(MockStore);
+    spyOn(store, 'dispatch');
 
     fixture = TestBed.createComponent(PlateListComponent);
     component = fixture.componentInstance;
@@ -29,7 +46,26 @@ describe('PlateListComponent', () => {
     expect(component.pageSizeOptions).toEqual([5, 10, 20]);
   });
 
-  it('should load data from file', () => {
-    expect(component.dataSource.data).toEqual(dataFile.dataList.map((item: IPlateDetails, index: number) => ({...item, index})));
+  describe('ngOnInit', () => {
+    it('should dispatch data fetch', () => {
+      expect(store.dispatch).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith(initiatePlateList());
+    });
+
+    it('should set list', () => {
+      expect(component.dataSource.data).toEqual([]);
+
+      const mockedPlateItem: ITableItem = {
+        lastName: 'lastName',
+        name: 'name',
+        plate: 'plate',
+        index: 0
+      };
+
+      store.overrideSelector(getPlateList, [mockedPlateItem]);
+      store.refreshState();
+
+      expect(component.dataSource.data).toEqual([mockedPlateItem]);
+    });
   });
 });
