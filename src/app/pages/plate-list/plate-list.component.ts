@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 
@@ -21,9 +21,8 @@ export class PlateListComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<ITableItem>();
   pageSizeOptions = [5, 10, 20];
 
-
   ngOnInit(): void {
-    this.dataSource.data = dataFile.dataList.map((item: IPlateDetails, index: number) => ({...item, index}))
+    this.dataSource.data = dataFile.dataList.map((item: IPlateDetails, index: number) => ({...item, index}));
   }
 
   ngAfterViewInit(): void {
