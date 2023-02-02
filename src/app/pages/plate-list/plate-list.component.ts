@@ -58,7 +58,7 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
     // @TODO: add create modal
     // @TODO: add create func
     console.log('addItem')
-  };
+  }
 
   editItem(item: ITableItem): void {
     // @TODO: add edit modal

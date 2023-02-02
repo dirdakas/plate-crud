@@ -9,7 +9,7 @@ export interface PlateListState {
   data?: ITableItem[];
 }
 
-export const plateListFeatureKey: string = 'plate-list';
+export const plateListFeatureKey = 'plate-list';
 
 export const initialPlateListState: PlateListState = {
   isLoading: false,
@@ -27,7 +27,7 @@ const reducer: ActionReducer<PlateListState, Action> = createReducer(
       ...state,
       isLoading: false,
       isLoaded: true,
-      data: [ ...action.payload]
+      data: [ ...action.payload ]
     })
   })
 );
@@ -36,6 +36,6 @@ export function plateListReducer(state: PlateListState | undefined, action: Acti
   return reducer(state, action);
 }
 
-export const selectPlateListState: MemoizedSelector<{}, PlateListState> = createFeatureSelector<PlateListState>(
+export const selectPlateListState: MemoizedSelector<object, PlateListState> = createFeatureSelector<PlateListState>(
   plateListFeatureKey
 );

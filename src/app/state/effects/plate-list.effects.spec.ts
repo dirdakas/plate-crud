@@ -14,7 +14,7 @@ import dataFile from 'src/assets/data.json';
 describe('PlateListEffects', () => {
   let effects: PlateListEffects;
   let actions$: Observable<Action>;
-  let mockStore: MockStore<{}>;
+  let mockStore: MockStore<unknown>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

@@ -10,7 +10,7 @@ describe('PlateListComponent', () => {
   let component: PlateListComponent;
   let fixture: ComponentFixture<PlateListComponent>;
 
-  let store: MockStore<{}>;
+  let store: MockStore<unknown>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,7 +19,7 @@ describe('PlateListComponent', () => {
       ],
       declarations: [ PlateListComponent ],
       providers: [
-        provideMockStore<{}>({
+        provideMockStore<unknown>({
           initialState: {
             isLoading: false,
             isLoaded: false,
