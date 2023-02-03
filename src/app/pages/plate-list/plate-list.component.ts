@@ -96,8 +96,6 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deleteItem(item: ITableItem): void {
-    // @TODO: add removal
-    console.log('deleteItem', item);
     this.dialog
       .open(ConfirmationModalComponent, {
         data: {
