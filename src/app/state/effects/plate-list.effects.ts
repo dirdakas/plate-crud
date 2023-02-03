@@ -44,9 +44,12 @@ export class PlateListEffects {
   deletePlate$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(deletePlate),
-      map((payload: any) => {
+      withLatestFrom(this.store$.select(getPlateList)),
+      map(([item, list]) => {
         // @TODO: add removal from file
-        return deletePlateSuccess(payload);
+        return deletePlateSuccess({
+          payload: this.removeItemFromList(item as unknown as ITableItem, list),
+        });
       })
     )
   );
@@ -76,6 +79,13 @@ export class PlateListEffects {
       })
     )
   );
+
+  private removeItemFromList(
+    item: ITableItem,
+    curList: ITableItem[]
+  ): ITableItem[] {
+    return curList.length ? curList.filter(el => el.plate !== item.plate) : [];
+  }
 
   private getUpdatedList(
     isAdd: boolean,

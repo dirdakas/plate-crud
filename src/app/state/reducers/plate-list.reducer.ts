@@ -46,18 +46,16 @@ const reducer: ActionReducer<PlateListState, Action> = createReducer(
       data: [...action.payload],
     };
   }),
-  on(deletePlateSuccess, (state, action: any) => {
-    return {
+  on(
+    createPlateSuccess,
+    updatePlateSuccess,
+    deletePlateSuccess,
+    (state, action: any) => ({
       ...state,
       isLoading: false,
-      data: state.data?.filter(item => item.plate !== action.plate), // @TODO: move out to effect
-    };
-  }),
-  on(createPlateSuccess, updatePlateSuccess, (state, action: any) => ({
-    ...state,
-    isLoading: false,
-    data: action.payload,
-  }))
+      data: action.payload,
+    })
+  )
 );
 
 export function plateListReducer(

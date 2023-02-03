@@ -21,7 +21,7 @@ import { PlateListEffects } from './plate-list.effects';
 import dataFile from 'src/assets/data.json';
 import { getPlateList } from '../selectors';
 
-fdescribe('PlateListEffects', () => {
+describe('PlateListEffects', () => {
   let effects: PlateListEffects;
   let actions$: Observable<Action>;
   let mockStore: MockStore<unknown>;
@@ -83,7 +83,26 @@ fdescribe('PlateListEffects', () => {
       'should remove item from list',
       marbles(m => {
         const action: Action = deletePlate(mockedPlateItem);
-        const completion = deletePlateSuccess(mockedPlateItem);
+        const completion = deletePlateSuccess({ payload: [] });
+        mockStore.overrideSelector(getPlateList, [mockedPlateItem]);
+        mockStore.refreshState();
+
+        actions$ = m.hot('--a', { a: action });
+        const expected = m.cold('--b', {
+          b: completion,
+        });
+
+        m.expect(effects.deletePlate$).toBeObservable(expected);
+      })
+    );
+
+    it(
+      'should return empty list, since initial list is empty',
+      marbles(m => {
+        const action: Action = deletePlate(mockedPlateItem);
+        const completion = deletePlateSuccess({ payload: [] });
+        mockStore.overrideSelector(getPlateList, []);
+        mockStore.refreshState();
 
         actions$ = m.hot('--a', { a: action });
         const expected = m.cold('--b', {

@@ -119,15 +119,12 @@ describe('plateListReducer', () => {
   });
 
   describe('deletePlateSuccess', () => {
-    it('should set loading to false and remove item from list', () => {
-      const action: Action = deletePlateSuccess(mockedPlateItem);
+    it('should set loading to false and update data list', () => {
+      const action: Action = deletePlateSuccess({ payload: [mockedPlateItem] });
       const result: PlateListState = plateListReducer(
         {
           ...initialPlateListState,
-          data: [
-            { ...mockedPlateItem },
-            { ...mockedPlateItem, plate: 'plate2' },
-          ],
+          data: [mockedPlateItem],
         },
         action
       );
@@ -135,7 +132,7 @@ describe('plateListReducer', () => {
       expect(result).toEqual({
         ...initialPlateListState,
         isLoading: false,
-        data: [{ ...mockedPlateItem, plate: 'plate2' }],
+        data: [mockedPlateItem],
       });
     });
   });

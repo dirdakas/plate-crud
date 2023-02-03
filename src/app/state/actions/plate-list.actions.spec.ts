@@ -45,10 +45,10 @@ describe('Store - plate list actions', () => {
   });
 
   it('deletePlateSuccess', () => {
-    const action: Action = deletePlateSuccess(mockedPlateItem);
+    const action: Action = deletePlateSuccess({ payload: [mockedPlateItem] });
     expect({ ...action }).toEqual({
       type: PlateListTypes.DeletePlateSuccess,
-      ...mockedPlateItem,
+      payload: [mockedPlateItem],
     } as unknown as Action);
   });
 

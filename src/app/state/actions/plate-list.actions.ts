@@ -36,8 +36,15 @@ export const deletePlate: ActionCreator<
 
 export const deletePlateSuccess: ActionCreator<
   PlateListTypes.DeletePlateSuccess,
-  (props: ITableItem) => TypedAction<PlateListTypes.DeletePlateSuccess>
-> = createAction(PlateListTypes.DeletePlateSuccess, props<ITableItem>());
+  (props: {
+    payload: ITableItem[];
+  }) => TypedAction<PlateListTypes.DeletePlateSuccess>
+> = createAction(
+  PlateListTypes.DeletePlateSuccess,
+  props<{
+    payload: ITableItem[];
+  }>()
+);
 
 export const createPlate: ActionCreator<
   PlateListTypes.CreatePlate,
