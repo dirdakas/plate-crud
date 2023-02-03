@@ -6,8 +6,13 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Observable } from 'rxjs';
 import { marbles } from 'rxjs-marbles';
 
-import { IPlateDetails } from 'src/app/models';
-import { getPlateListSuccess, initiatePlateList } from '../actions';
+import { IPlateDetails, ITableItem } from 'src/app/models';
+import {
+  deletePlate,
+  deletePlateSuccess,
+  getPlateListSuccess,
+  initiatePlateList,
+} from '../actions';
 import { PlateListEffects } from './plate-list.effects';
 import dataFile from 'src/assets/data.json';
 
@@ -15,6 +20,12 @@ describe('PlateListEffects', () => {
   let effects: PlateListEffects;
   let actions$: Observable<Action>;
   let mockStore: MockStore<unknown>;
+  const mockedPlateItem: ITableItem = {
+    lastName: 'lastName',
+    name: 'name',
+    plate: 'plate',
+    index: 0,
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,7 +49,7 @@ describe('PlateListEffects', () => {
     expect(effects).toBeDefined();
   });
 
-  describe('getPrivateInitialData$', () => {
+  describe('initiatePlateList$', () => {
     it(
       'should fetch data and re-map it',
       marbles(m => {
@@ -58,6 +69,23 @@ describe('PlateListEffects', () => {
         });
 
         m.expect(effects.initiatePlateList$).toBeObservable(expected);
+      })
+    );
+  });
+
+  describe('deletePlate$', () => {
+    it(
+      'should remove item from list',
+      marbles(m => {
+        const action: Action = deletePlate(mockedPlateItem);
+        const completion = deletePlateSuccess(mockedPlateItem);
+
+        actions$ = m.hot('--a', { a: action });
+        const expected = m.cold('--b', {
+          b: completion,
+        });
+
+        m.expect(effects.deletePlate$).toBeObservable(expected);
       })
     );
   });

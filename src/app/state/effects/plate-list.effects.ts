@@ -4,9 +4,14 @@ import { Action } from '@ngrx/store';
 
 import { Observable, map } from 'rxjs';
 
-import { getPlateListSuccess, initiatePlateList } from '../actions';
+import {
+  deletePlate,
+  deletePlateSuccess,
+  getPlateListSuccess,
+  initiatePlateList,
+} from '../actions';
 import dataFile from 'src/assets/data.json';
-import { IPlateDetails } from 'src/app/models/plate-details.model';
+import { IPlateDetails } from 'src/app/models';
 
 @Injectable()
 export class PlateListEffects {
@@ -24,6 +29,16 @@ export class PlateListEffects {
             })) || [],
         })
       )
+    )
+  );
+
+  deletePlate$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deletePlate),
+      map((payload: any) => {
+        // @TODO: add removal from file
+        return deletePlateSuccess(payload);
+      })
     )
   );
 }

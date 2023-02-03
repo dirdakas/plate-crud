@@ -1,0 +1,19 @@
+<div class="confirmation-modal-wrapper">
+  <h1 mat-dialog-title>Confirmation needed</h1>
+
+  <div mat-dialog-content>
+    {{ data.description }}
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button
+      color="primary"
+      (click)="confirm()"
+      mat-raised-button
+      mat-dialog-confirm
+      cdkFocusInitial>
+      Confirm
+    </button>
+  </div>
+</div>

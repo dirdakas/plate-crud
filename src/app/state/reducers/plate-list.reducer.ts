@@ -7,8 +7,10 @@ import {
   on,
 } from '@ngrx/store';
 
-import { ITableItem } from 'src/app/models/table-item.model';
+import { ITableItem } from 'src/app/models';
 import {
+  deletePlate,
+  deletePlateSuccess,
   getPlateListSuccess,
   initiatePlateList,
 } from '../actions/plate-list.actions';
@@ -28,7 +30,7 @@ export const initialPlateListState: PlateListState = {
 
 const reducer: ActionReducer<PlateListState, Action> = createReducer(
   initialPlateListState,
-  on(initiatePlateList, state => ({
+  on(initiatePlateList, deletePlate, state => ({
     ...state,
     isLoading: true,
   })),
@@ -38,6 +40,13 @@ const reducer: ActionReducer<PlateListState, Action> = createReducer(
       isLoading: false,
       isLoaded: true,
       data: [...action.payload],
+    };
+  }),
+  on(deletePlateSuccess, (state, action: any) => {
+    return {
+      ...state,
+      isLoading: false,
+      data: state.data?.filter(item => item.plate !== action.plate),
     };
   })
 );

@@ -9,15 +9,18 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { select, Store } from '@ngrx/store';
-import { Subject, takeUntil, Observable, tap } from 'rxjs';
+import { Subject, takeUntil, Observable, tap, filter } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 import { ITableItem, TableColumnsEnum } from 'src/app/models';
 import {
+  deletePlate,
   getPlateList,
   initiatePlateList,
   isLoading,
   PlateListState,
 } from 'src/app/state';
+import { ConfirmationModalComponent } from 'src/app/components';
 
 @Component({
   selector: 'app-plate-list',
@@ -42,7 +45,10 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private store$: Store<PlateListState>) {}
+  constructor(
+    private store$: Store<PlateListState>,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.store$.dispatch(initiatePlateList());
@@ -78,8 +84,19 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deleteItem(item: ITableItem): void {
-    // @TODO: add confirmation
     // @TODO: add removal
     console.log('deleteItem', item);
+    this.dialog
+      .open(ConfirmationModalComponent, {
+        data: {
+          description: `Are you sure want to remove plate: "${item.plate}"`,
+        },
+      })
+      .afterClosed()
+      .pipe(
+        filter(confirmed => !!confirmed),
+        tap(() => this.store$.dispatch(deletePlate(item)))
+      )
+      .subscribe();
   }
 }

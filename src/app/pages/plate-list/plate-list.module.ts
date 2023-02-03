@@ -7,6 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { PlateListComponent } from './plate-list.component';
 import {
@@ -14,7 +15,7 @@ import {
   plateListFeatureKey,
   plateListReducer,
 } from './../../state';
-import { SpinnerModule } from 'src/app/components/spinner/spinner.module';
+import { SpinnerModule, ConfirmationModalModule } from 'src/app/components';
 
 @NgModule({
   declarations: [PlateListComponent],
@@ -33,6 +34,8 @@ import { SpinnerModule } from 'src/app/components/spinner/spinner.module';
     SpinnerModule,
     MatButtonModule,
     MatIconModule,
+    ConfirmationModalModule,
+    MatDialogModule,
   ],
 })
 export class PlateListModule {}
