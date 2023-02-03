@@ -61,7 +61,7 @@ export class EditItemModalComponent {
       ]),
     });
 
-    this.isCreate = !this.data;
+    this.isCreate = !this.data.item;
   }
 
   createNewPlate(): void {
