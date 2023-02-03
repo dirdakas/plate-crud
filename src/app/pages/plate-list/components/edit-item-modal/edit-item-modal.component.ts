@@ -20,6 +20,7 @@ import {
   PlateListState,
   updatePlate,
 } from 'src/app/state';
+import { PLATE_NUMBER_REGEX } from '../../models';
 
 export interface IEditItem {
   item?: ITableItem;
@@ -47,17 +48,17 @@ export class EditItemModalComponent {
         Validators.maxLength(6),
         Validators.minLength(6),
         this.uniqPlateValidator(),
-        // pattern validator
+        Validators.pattern(PLATE_NUMBER_REGEX),
       ]),
       name: new FormControl(this.data ? this.data.item?.name : '', [
         Validators.required,
         Validators.minLength(2),
-        // string validator
+        this.onlyLettersValidator(),
       ]),
       lastName: new FormControl(this.data ? this.data.item?.lastName : '', [
         Validators.required,
         Validators.minLength(2),
-        // string validator
+        this.onlyLettersValidator(),
       ]),
     });
 
@@ -114,6 +115,18 @@ export class EditItemModalComponent {
 
       if (!!plate && this.data.currPlates.includes(plate)) {
         return { notUniq: true };
+      } else {
+        return null;
+      }
+    };
+  }
+
+  private onlyLettersValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value: string = control.value || '';
+
+      if (!!value && !/^[a-zA-Z]+$/.test(value)) {
+        return { notLetters: true };
       } else {
         return null;
       }

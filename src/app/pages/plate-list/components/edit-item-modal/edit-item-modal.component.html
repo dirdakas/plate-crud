@@ -32,6 +32,11 @@
             fieldMaxLength;
             context: { key: 'plate', count: 6 }
           "></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
+            notPlate;
+            context: { key: 'plate' }
+          "></ng-container>
       </mat-form-field>
 
       <mat-form-field>
@@ -47,6 +52,11 @@
             fieldMinLength;
             context: { key: 'name', count: 2 }
           "></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
+            notLetters;
+            context: { key: 'name' }
+          "></ng-container>
       </mat-form-field>
 
       <mat-form-field>
@@ -61,6 +71,11 @@
           *ngTemplateOutlet="
             fieldMinLength;
             context: { key: 'lastName', count: 2 }
+          "></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
+            notLetters;
+            context: { key: 'lastName' }
           "></ng-container>
       </mat-form-field>
     </form>
@@ -112,5 +127,23 @@
       plateForm.get(key)?.hasError('maxlength') && plateForm.get(key)?.touched
     ">
     Field must contain no more than {{ count }} letters
+  </mat-error>
+</ng-template>
+
+<ng-template #notLetters let-key="key">
+  <mat-error
+    *ngIf="
+      plateForm.get(key)?.hasError('notLetters') && plateForm.get(key)?.touched
+    ">
+    Field must contain only letters
+  </mat-error>
+</ng-template>
+
+<ng-template #notPlate let-key="key">
+  <mat-error
+    *ngIf="
+      plateForm.get(key)?.hasError('pattern') && plateForm.get(key)?.touched
+    ">
+    Plate should be 3 letters and 3 numbers
   </mat-error>
 </ng-template>

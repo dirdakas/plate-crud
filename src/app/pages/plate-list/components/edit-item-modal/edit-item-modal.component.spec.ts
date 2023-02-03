@@ -111,6 +111,28 @@ describe('EditItemModalComponent', () => {
         true
       );
     });
+
+    it('should set error for plate if incorrect pattern', () => {
+      component.plateForm.controls['plate'].setValue('aaaaaa');
+
+      expect(component.plateForm.valid).toBe(false);
+      expect(component.plateForm.controls['plate'].hasError('pattern')).toBe(
+        true
+      );
+    });
+
+    it('should set error for name and lastName if contains not only letters', () => {
+      component.plateForm.controls['name'].setValue('asd123');
+      component.plateForm.controls['lastName'].setValue('asd123');
+
+      expect(component.plateForm.valid).toBe(false);
+      expect(component.plateForm.controls['name'].hasError('notLetters')).toBe(
+        true
+      );
+      expect(
+        component.plateForm.controls['lastName'].hasError('notLetters')
+      ).toBe(true);
+    });
   });
 
   describe('createNewPlate', () => {
