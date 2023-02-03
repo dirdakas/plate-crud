@@ -19,6 +19,11 @@
           "></ng-container>
         <ng-container
           *ngTemplateOutlet="
+            notUniqPlate;
+            context: { key: 'plate' }
+          "></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
             fieldMinLength;
             context: { key: 'plate', count: 6 }
           "></ng-container>
@@ -80,6 +85,15 @@
       plateForm.get(key)?.hasError('required') && plateForm.get(key)?.touched
     ">
     Field is required
+  </mat-error>
+</ng-template>
+
+<ng-template #notUniqPlate let-key="key">
+  <mat-error
+    *ngIf="
+      plateForm.get(key)?.hasError('notUniq') && plateForm.get(key)?.touched
+    ">
+    Field should be uniq
   </mat-error>
 </ng-template>
 

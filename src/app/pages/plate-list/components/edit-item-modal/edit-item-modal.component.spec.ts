@@ -27,10 +27,13 @@ describe('EditItemModalComponent', () => {
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
-            plate: 'aaa123',
-            name: 'name',
-            lastName: 'lastName',
-            index: 0,
+            item: {
+              plate: 'aaa123',
+              name: 'name',
+              lastName: 'lastName',
+              index: 0,
+            },
+            currPlates: ['aaa111'],
           },
         },
         provideMockStore(),
@@ -96,6 +99,15 @@ describe('EditItemModalComponent', () => {
 
       expect(component.plateForm.valid).toBe(false);
       expect(component.plateForm.controls['plate'].hasError('maxlength')).toBe(
+        true
+      );
+    });
+
+    it('should set error for plate if not uniq', () => {
+      component.plateForm.controls['plate'].setValue('aaa111');
+
+      expect(component.plateForm.valid).toBe(false);
+      expect(component.plateForm.controls['plate'].hasError('notUniq')).toBe(
         true
       );
     });

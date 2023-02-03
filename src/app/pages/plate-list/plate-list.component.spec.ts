@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ITableItem } from 'src/app/models';
 import { deletePlate, getPlateList, initiatePlateList } from 'src/app/state';
+import { EditItemModalComponent } from './components';
 import { PlateListComponent } from './plate-list.component';
 
 describe('PlateListComponent', () => {
@@ -18,6 +19,12 @@ describe('PlateListComponent', () => {
     name: 'name',
     plate: 'plate',
     index: 0,
+  };
+  const mockedDialog = {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    open: (component: any, data: any) => ({
+      afterClosed: () => afterClosedResult$,
+    }),
   };
 
   const behSubRes: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
@@ -38,18 +45,13 @@ describe('PlateListComponent', () => {
         }),
         {
           provide: MatDialog,
-          useValue: {
-            open: () => ({
-              afterClosed: () => afterClosedResult$,
-            }),
-          },
+          useValue: mockedDialog,
         },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
-    spyOn(store, 'dispatch');
 
     fixture = TestBed.createComponent(PlateListComponent);
     component = fixture.componentInstance;
@@ -66,6 +68,10 @@ describe('PlateListComponent', () => {
 
   describe('ngOnInit', () => {
     it('should dispatch data fetch', () => {
+      spyOn(store, 'dispatch');
+
+      component.ngOnInit();
+
       expect(store.dispatch).toHaveBeenCalled();
       expect(store.dispatch).toHaveBeenCalledWith(initiatePlateList());
     });
@@ -83,6 +89,8 @@ describe('PlateListComponent', () => {
   describe('deleteItem', () => {
     it('should dispatch delete event', () => {
       behSubRes.next(true);
+      spyOn(store, 'dispatch');
+
       component.deleteItem(mockedPlateItem);
 
       expect(store.dispatch).toHaveBeenCalledWith(deletePlate(mockedPlateItem));
@@ -90,11 +98,46 @@ describe('PlateListComponent', () => {
 
     it('should not dispatch delete event', () => {
       behSubRes.next(false);
+      spyOn(store, 'dispatch');
+
       component.deleteItem(mockedPlateItem);
 
       expect(store.dispatch).not.toHaveBeenCalledWith(
         deletePlate(mockedPlateItem)
       );
+    });
+  });
+
+  describe('addItem', () => {
+    it('should open modal for new item creation', () => {
+      spyOn(mockedDialog, 'open').and.callThrough();
+      store.overrideSelector(getPlateList, [mockedPlateItem]);
+      store.refreshState();
+
+      component.addItem();
+
+      expect(mockedDialog.open).toHaveBeenCalled();
+      expect(mockedDialog.open).toHaveBeenCalledWith(EditItemModalComponent, {
+        data: {
+          currPlates: [mockedPlateItem.plate],
+        },
+      });
+    });
+  });
+
+  describe('editItem', () => {
+    it('should open modal for edit item', () => {
+      spyOn(mockedDialog, 'open').and.callThrough();
+
+      component.editItem(mockedPlateItem);
+
+      expect(mockedDialog.open).toHaveBeenCalled();
+      expect(mockedDialog.open).toHaveBeenCalledWith(EditItemModalComponent, {
+        data: {
+          item: mockedPlateItem,
+          currPlates: [],
+        },
+      });
     });
   });
 });

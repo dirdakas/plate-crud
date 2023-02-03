@@ -73,36 +73,25 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   addItem(): void {
-    // @TODO: add create modal
-    // @TODO: add create func
-    console.log('addItem');
     this.dialog
-      .open(EditItemModalComponent)
+      .open(EditItemModalComponent, {
+        data: {
+          currPlates: this.getAllPlates(),
+        },
+      })
       .afterClosed()
-      .pipe(
-        tap(() => {
-          console.log('create new item');
-          // @TODO: add action
-        })
-      )
       .subscribe();
   }
 
   editItem(item: ITableItem): void {
-    // @TODO: add edit modal
-    // @TODO: add edit func
-    console.log('editItem', item);
     this.dialog
       .open(EditItemModalComponent, {
-        data: item,
+        data: {
+          item,
+          currPlates: this.getAllPlates(item.plate),
+        },
       })
       .afterClosed()
-      .pipe(
-        tap(() => {
-          console.log('edit item');
-          // @TODO: edit action
-        })
-      )
       .subscribe();
   }
 
@@ -121,5 +110,13 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
         tap(() => this.store$.dispatch(deletePlate(item)))
       )
       .subscribe();
+  }
+
+  private getAllPlates(notToInclude = ''): string[] {
+    return [
+      ...this.dataSource.data.reduce((res: string[], curr: ITableItem) => {
+        return curr.plate === notToInclude ? res : [...res, curr.plate];
+      }, []),
+    ];
   }
 }

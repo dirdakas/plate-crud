@@ -1,8 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,6 +21,11 @@ import {
   updatePlate,
 } from 'src/app/state';
 
+export interface IEditItem {
+  item?: ITableItem;
+  currPlates: string[];
+}
+
 @Component({
   selector: 'app-edit-item-modal',
   templateUrl: './edit-item-modal.component.html',
@@ -28,25 +36,25 @@ export class EditItemModalComponent {
   plateForm: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: ITableItem,
+    @Inject(MAT_DIALOG_DATA) private data: IEditItem,
     private dialogRef: MatDialogRef<ConfirmationModalComponent>,
     private fb: FormBuilder,
     private store$: Store<PlateListState>
   ) {
     this.plateForm = this.fb.group({
-      plate: new FormControl(this.data ? this.data.plate : '', [
+      plate: new FormControl(this.data ? this.data.item?.plate : '', [
         Validators.required,
         Validators.maxLength(6),
         Validators.minLength(6),
-        // uniq validator
+        this.uniqPlateValidator(),
         // pattern validator
       ]),
-      name: new FormControl(this.data ? this.data.name : '', [
+      name: new FormControl(this.data ? this.data.item?.name : '', [
         Validators.required,
         Validators.minLength(2),
         // string validator
       ]),
-      lastName: new FormControl(this.data ? this.data.lastName : '', [
+      lastName: new FormControl(this.data ? this.data.item?.lastName : '', [
         Validators.required,
         Validators.minLength(2),
         // string validator
@@ -88,7 +96,7 @@ export class EditItemModalComponent {
         updatePlate({
           payload: {
             plate: this.plateForm.value.plate.toUpperCase(),
-            index: this.data.index,
+            index: (this.data.item as ITableItem).index,
             lastName: this.plateForm.value.lastName,
             name: this.plateForm.value.name,
           },
@@ -98,5 +106,17 @@ export class EditItemModalComponent {
     } else {
       this.plateForm.markAllAsTouched();
     }
+  }
+
+  private uniqPlateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const plate: string = control.value || '';
+
+      if (!!plate && this.data.currPlates.includes(plate)) {
+        return { notUniq: true };
+      } else {
+        return null;
+      }
+    };
   }
 }
