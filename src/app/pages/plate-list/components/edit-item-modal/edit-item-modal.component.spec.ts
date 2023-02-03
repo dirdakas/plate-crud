@@ -7,11 +7,11 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { createPlate, getNewPlateIndex, updatePlate } from 'src/app/state';
 import { EditItemModalComponent } from './edit-item-modal.component';
 
-describe('EditItemModalComponent', () => {
+fdescribe('EditItemModalComponent', () => {
   let component: EditItemModalComponent;
   let fixture: ComponentFixture<EditItemModalComponent>;
   let store: MockStore<unknown>;
-  const mockedDialogRef = {
+  let mockedDialogRef = {
     close(value: boolean) {
       console.log(value);
     },
@@ -42,6 +42,7 @@ describe('EditItemModalComponent', () => {
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
+    mockedDialogRef = TestBed.inject(MatDialogRef);
     fixture = TestBed.createComponent(EditItemModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -136,10 +137,13 @@ describe('EditItemModalComponent', () => {
   });
 
   describe('createNewPlate', () => {
-    it('should mark form as touched to show errors', () => {
-      component.plateForm.controls['plate'].setValue('');
+    beforeEach(() => {
       spyOn(store, 'dispatch');
       spyOn(component.plateForm, 'markAllAsTouched');
+    });
+
+    it('should mark form as touched to show errors', () => {
+      component.plateForm.controls['plate'].setValue('');
 
       component.createNewPlate();
 
@@ -148,8 +152,6 @@ describe('EditItemModalComponent', () => {
     });
 
     it('should dispatch create event and close modal', () => {
-      spyOn(store, 'dispatch');
-      spyOn(component.plateForm, 'markAllAsTouched');
       spyOn(mockedDialogRef, 'close');
       store.overrideSelector(getNewPlateIndex, 1);
       store.refreshState();
@@ -173,10 +175,13 @@ describe('EditItemModalComponent', () => {
   });
 
   describe('updatePlate', () => {
-    it('should mark form as touched to show errors', () => {
-      component.plateForm.controls['plate'].setValue('');
+    beforeEach(() => {
       spyOn(store, 'dispatch');
       spyOn(component.plateForm, 'markAllAsTouched');
+    });
+
+    it('should mark form as touched to show errors', () => {
+      component.plateForm.controls['plate'].setValue('');
 
       component.updatePlate();
 
@@ -185,8 +190,6 @@ describe('EditItemModalComponent', () => {
     });
 
     it('should dispatch update event and close modal', () => {
-      spyOn(store, 'dispatch');
-      spyOn(component.plateForm, 'markAllAsTouched');
       spyOn(mockedDialogRef, 'close');
       store.overrideSelector(getNewPlateIndex, 0);
       store.refreshState();
