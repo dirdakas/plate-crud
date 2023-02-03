@@ -9,11 +9,15 @@ import {
 
 import { ITableItem } from 'src/app/models';
 import {
+  createPlate,
+  createPlateSuccess,
   deletePlate,
   deletePlateSuccess,
   getPlateListSuccess,
   initiatePlateList,
-} from '../actions/plate-list.actions';
+  updatePlate,
+  updatePlateSuccess,
+} from '../actions';
 
 export interface PlateListState {
   isLoading: boolean;
@@ -30,7 +34,7 @@ export const initialPlateListState: PlateListState = {
 
 const reducer: ActionReducer<PlateListState, Action> = createReducer(
   initialPlateListState,
-  on(initiatePlateList, deletePlate, state => ({
+  on(initiatePlateList, deletePlate, createPlate, updatePlate, state => ({
     ...state,
     isLoading: true,
   })),
@@ -46,9 +50,14 @@ const reducer: ActionReducer<PlateListState, Action> = createReducer(
     return {
       ...state,
       isLoading: false,
-      data: state.data?.filter(item => item.plate !== action.plate),
+      data: state.data?.filter(item => item.plate !== action.plate), // @TODO: move out to effect
     };
-  })
+  }),
+  on(createPlateSuccess, updatePlateSuccess, (state, action: any) => ({
+    ...state,
+    isLoading: false,
+    data: action.payload,
+  }))
 );
 
 export function plateListReducer(

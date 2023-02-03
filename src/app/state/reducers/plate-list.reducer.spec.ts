@@ -2,10 +2,14 @@ import { Action } from '@ngrx/store';
 
 import { ITableItem } from 'src/app/models';
 import {
+  createPlate,
+  createPlateSuccess,
   deletePlate,
   deletePlateSuccess,
   getPlateListSuccess,
   initiatePlateList,
+  updatePlate,
+  updatePlateSuccess,
 } from '../actions';
 import {
   initialPlateListState,
@@ -36,6 +40,40 @@ describe('plateListReducer', () => {
   describe('initiatePlateList', () => {
     it('should set loading to true', () => {
       const action: Action = initiatePlateList();
+      const result: PlateListState = plateListReducer(
+        initialPlateListState,
+        action
+      );
+
+      expect(result).toEqual({
+        ...initialPlateListState,
+        isLoading: true,
+      });
+    });
+  });
+
+  describe('createPlate', () => {
+    it('should set loading to true', () => {
+      const action: Action = createPlate({ payload: {} } as {
+        payload: ITableItem;
+      });
+      const result: PlateListState = plateListReducer(
+        initialPlateListState,
+        action
+      );
+
+      expect(result).toEqual({
+        ...initialPlateListState,
+        isLoading: true,
+      });
+    });
+  });
+
+  describe('updatePlate', () => {
+    it('should set loading to true', () => {
+      const action: Action = updatePlate({ payload: {} } as {
+        payload: ITableItem;
+      });
       const result: PlateListState = plateListReducer(
         initialPlateListState,
         action
@@ -98,6 +136,50 @@ describe('plateListReducer', () => {
         ...initialPlateListState,
         isLoading: false,
         data: [{ ...mockedPlateItem, plate: 'plate2' }],
+      });
+    });
+  });
+
+  describe('createPlateSuccess', () => {
+    it('should set loading to false and update data list', () => {
+      const action: Action = createPlateSuccess({ payload: [mockedPlateItem] });
+      const result: PlateListState = plateListReducer(
+        {
+          ...initialPlateListState,
+          data: [
+            { ...mockedPlateItem },
+            { ...mockedPlateItem, plate: 'plate2' },
+          ],
+        },
+        action
+      );
+
+      expect(result).toEqual({
+        ...initialPlateListState,
+        isLoading: false,
+        data: [{ ...mockedPlateItem }],
+      });
+    });
+  });
+
+  describe('updatePlateSuccess', () => {
+    it('should set loading to false and update data list', () => {
+      const action: Action = updatePlateSuccess({ payload: [mockedPlateItem] });
+      const result: PlateListState = plateListReducer(
+        {
+          ...initialPlateListState,
+          data: [
+            { ...mockedPlateItem },
+            { ...mockedPlateItem, plate: 'plate2' },
+          ],
+        },
+        action
+      );
+
+      expect(result).toEqual({
+        ...initialPlateListState,
+        isLoading: false,
+        data: [{ ...mockedPlateItem }],
       });
     });
   });

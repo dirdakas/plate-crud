@@ -2,11 +2,15 @@ import { Action } from '@ngrx/store';
 
 import { ITableItem } from 'src/app/models';
 import {
+  createPlate,
+  createPlateSuccess,
   deletePlate,
   deletePlateSuccess,
   getPlateListSuccess,
   initiatePlateList,
   PlateListTypes,
+  updatePlate,
+  updatePlateSuccess,
 } from './plate-list.actions';
 
 describe('Store - plate list actions', () => {
@@ -45,6 +49,38 @@ describe('Store - plate list actions', () => {
     expect({ ...action }).toEqual({
       type: PlateListTypes.DeletePlateSuccess,
       ...mockedPlateItem,
+    } as unknown as Action);
+  });
+
+  it('createPlate', () => {
+    const action: Action = createPlate({ payload: mockedPlateItem });
+    expect({ ...action }).toEqual({
+      type: PlateListTypes.CreatePlate,
+      payload: mockedPlateItem,
+    } as unknown as Action);
+  });
+
+  it('createPlateSuccess', () => {
+    const action: Action = createPlateSuccess({ payload: [mockedPlateItem] });
+    expect({ ...action }).toEqual({
+      type: PlateListTypes.CreatePlateSuccess,
+      payload: [mockedPlateItem],
+    } as unknown as Action);
+  });
+
+  it('updatePlate', () => {
+    const action: Action = updatePlate({ payload: mockedPlateItem });
+    expect({ ...action }).toEqual({
+      type: PlateListTypes.UpdatePlate,
+      payload: mockedPlateItem,
+    } as unknown as Action);
+  });
+
+  it('updatePlateSuccess', () => {
+    const action: Action = updatePlateSuccess({ payload: [mockedPlateItem] });
+    expect({ ...action }).toEqual({
+      type: PlateListTypes.UpdatePlateSuccess,
+      payload: [mockedPlateItem],
     } as unknown as Action);
   });
 });

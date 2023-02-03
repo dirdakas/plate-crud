@@ -8,6 +8,10 @@ export enum PlateListTypes {
   GetPlateListSuccess = '[Plate-List] Get plate list success',
   DeletePlate = '[Plate-List] Delete plate',
   DeletePlateSuccess = '[Plate-List] Delete plate success',
+  CreatePlate = '[Plate-List] Create plate',
+  CreatePlateSuccess = '[Plate-List] Create plate success',
+  UpdatePlate = '[Plate-List] Update plate',
+  UpdatePlateSuccess = '[Plate-List] Update plate success',
 }
 
 export const initiatePlateList: ActionCreator<
@@ -34,3 +38,33 @@ export const deletePlateSuccess: ActionCreator<
   PlateListTypes.DeletePlateSuccess,
   (props: ITableItem) => TypedAction<PlateListTypes.DeletePlateSuccess>
 > = createAction(PlateListTypes.DeletePlateSuccess, props<ITableItem>());
+
+export const createPlate: ActionCreator<
+  PlateListTypes.CreatePlate,
+  (props: { payload: ITableItem }) => TypedAction<PlateListTypes.CreatePlate>
+> = createAction(PlateListTypes.CreatePlate, props<{ payload: ITableItem }>());
+
+export const createPlateSuccess: ActionCreator<
+  PlateListTypes.CreatePlateSuccess,
+  (props: {
+    payload: ITableItem[];
+  }) => TypedAction<PlateListTypes.CreatePlateSuccess>
+> = createAction(
+  PlateListTypes.CreatePlateSuccess,
+  props<{ payload: ITableItem[] }>()
+);
+
+export const updatePlate: ActionCreator<
+  PlateListTypes.UpdatePlate,
+  (props: { payload: ITableItem }) => TypedAction<PlateListTypes.UpdatePlate>
+> = createAction(PlateListTypes.UpdatePlate, props<{ payload: ITableItem }>());
+
+export const updatePlateSuccess: ActionCreator<
+  PlateListTypes.UpdatePlateSuccess,
+  (props: {
+    payload: ITableItem[];
+  }) => TypedAction<PlateListTypes.UpdatePlateSuccess>
+> = createAction(
+  PlateListTypes.UpdatePlateSuccess,
+  props<{ payload: ITableItem[] }>()
+);

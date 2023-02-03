@@ -8,6 +8,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { PlateListComponent } from './plate-list.component';
 import {
@@ -16,9 +18,11 @@ import {
   plateListReducer,
 } from './../../state';
 import { SpinnerModule, ConfirmationModalModule } from 'src/app/components';
+import { EditItemModalComponent } from './components/edit-item-modal/edit-item-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [PlateListComponent],
+  declarations: [PlateListComponent, EditItemModalComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -36,6 +40,9 @@ import { SpinnerModule, ConfirmationModalModule } from 'src/app/components';
     MatIconModule,
     ConfirmationModalModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
 })
 export class PlateListModule {}

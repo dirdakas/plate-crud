@@ -21,6 +21,7 @@ import {
   PlateListState,
 } from 'src/app/state';
 import { ConfirmationModalComponent } from 'src/app/components';
+import { EditItemModalComponent } from './components';
 
 @Component({
   selector: 'app-plate-list',
@@ -75,12 +76,34 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
     // @TODO: add create modal
     // @TODO: add create func
     console.log('addItem');
+    this.dialog
+      .open(EditItemModalComponent)
+      .afterClosed()
+      .pipe(
+        tap(() => {
+          console.log('create new item');
+          // @TODO: add action
+        })
+      )
+      .subscribe();
   }
 
   editItem(item: ITableItem): void {
     // @TODO: add edit modal
     // @TODO: add edit func
     console.log('editItem', item);
+    this.dialog
+      .open(EditItemModalComponent, {
+        data: item,
+      })
+      .afterClosed()
+      .pipe(
+        tap(() => {
+          console.log('edit item');
+          // @TODO: edit action
+        })
+      )
+      .subscribe();
   }
 
   deleteItem(item: ITableItem): void {

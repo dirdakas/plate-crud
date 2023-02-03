@@ -1,0 +1,102 @@
+<div class="edit-item-modal-wrapper">
+  <h1 mat-dialog-title>
+    {{ isCreate ? 'Add new entity' : 'Update existing entity' }}
+  </h1>
+
+  <div mat-dialog-content>
+    <form class="plate-form" [formGroup]="plateForm">
+      <mat-form-field>
+        <mat-label>Plate number:</mat-label>
+        <input
+          matInput
+          placeholder="AAA123"
+          formControlName="plate"
+          maxlength="6" />
+        <ng-container
+          *ngTemplateOutlet="
+            requiredField;
+            context: { key: 'plate' }
+          "></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
+            fieldMinLength;
+            context: { key: 'plate', count: 6 }
+          "></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
+            fieldMaxLength;
+            context: { key: 'plate', count: 6 }
+          "></ng-container>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>First name:</mat-label>
+        <input matInput placeholder="Vardenis" formControlName="name" />
+        <ng-container
+          *ngTemplateOutlet="
+            requiredField;
+            context: { key: 'name' }
+          "></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
+            fieldMinLength;
+            context: { key: 'name', count: 2 }
+          "></ng-container>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Last name:</mat-label>
+        <input matInput placeholder="Pavardenis" formControlName="lastName" />
+        <ng-container
+          *ngTemplateOutlet="
+            requiredField;
+            context: { key: 'lastName' }
+          "></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
+            fieldMinLength;
+            context: { key: 'lastName', count: 2 }
+          "></ng-container>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button
+      color="primary"
+      (click)="isCreate ? createNewPlate() : updatePlate()"
+      mat-raised-button
+      mat-dialog-confirm
+      cdkFocusInitial>
+      {{ isCreate ? 'Create' : 'Update' }}
+    </button>
+  </div>
+</div>
+
+<ng-template #requiredField let-key="key">
+  <mat-error
+    *ngIf="
+      plateForm.get(key)?.hasError('required') && plateForm.get(key)?.touched
+    ">
+    Field is required
+  </mat-error>
+</ng-template>
+
+<ng-template #fieldMinLength let-key="key" let-count="count">
+  <mat-error
+    *ngIf="
+      plateForm.get(key)?.hasError('minlength') && plateForm.get(key)?.touched
+    ">
+    Field must contain atleast {{ count }} letters
+  </mat-error>
+</ng-template>
+
+<ng-template #fieldMaxLength let-key="key" let-count="count">
+  <mat-error
+    *ngIf="
+      plateForm.get(key)?.hasError('maxlength') && plateForm.get(key)?.touched
+    ">
+    Field must contain no more than {{ count }} letters
+  </mat-error>
+</ng-template>

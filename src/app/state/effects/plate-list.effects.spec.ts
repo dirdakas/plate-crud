@@ -8,15 +8,20 @@ import { marbles } from 'rxjs-marbles';
 
 import { IPlateDetails, ITableItem } from 'src/app/models';
 import {
+  createPlate,
+  createPlateSuccess,
   deletePlate,
   deletePlateSuccess,
   getPlateListSuccess,
   initiatePlateList,
+  updatePlate,
+  updatePlateSuccess,
 } from '../actions';
 import { PlateListEffects } from './plate-list.effects';
 import dataFile from 'src/assets/data.json';
+import { getPlateList } from '../selectors';
 
-describe('PlateListEffects', () => {
+fdescribe('PlateListEffects', () => {
   let effects: PlateListEffects;
   let actions$: Observable<Action>;
   let mockStore: MockStore<unknown>;
@@ -86,6 +91,84 @@ describe('PlateListEffects', () => {
         });
 
         m.expect(effects.deletePlate$).toBeObservable(expected);
+      })
+    );
+  });
+
+  describe('createPlate$', () => {
+    it(
+      'should add new plate to the list, initial list is empty',
+      marbles(m => {
+        const action: Action = createPlate({ payload: mockedPlateItem });
+        const completion = createPlateSuccess({ payload: [mockedPlateItem] });
+        mockStore.overrideSelector(getPlateList, []);
+        mockStore.refreshState();
+
+        actions$ = m.hot('--a', { a: action });
+        const expected = m.cold('--b', {
+          b: completion,
+        });
+
+        m.expect(effects.createPlate$).toBeObservable(expected);
+      })
+    );
+
+    it(
+      'should add new plate to the list',
+      marbles(m => {
+        const action: Action = createPlate({ payload: mockedPlateItem });
+        const completion = createPlateSuccess({
+          payload: [mockedPlateItem, mockedPlateItem],
+        });
+        mockStore.overrideSelector(getPlateList, [mockedPlateItem]);
+        mockStore.refreshState();
+
+        actions$ = m.hot('--a', { a: action });
+        const expected = m.cold('--b', {
+          b: completion,
+        });
+
+        m.expect(effects.createPlate$).toBeObservable(expected);
+      })
+    );
+  });
+
+  describe('updatePlate$', () => {
+    it(
+      'should add new plate to the list, initial list is empty (should never be the case)',
+      marbles(m => {
+        const action: Action = updatePlate({ payload: mockedPlateItem });
+        const completion = updatePlateSuccess({ payload: [mockedPlateItem] });
+        mockStore.overrideSelector(getPlateList, []);
+        mockStore.refreshState();
+
+        actions$ = m.hot('--a', { a: action });
+        const expected = m.cold('--b', {
+          b: completion,
+        });
+
+        m.expect(effects.updatePlate$).toBeObservable(expected);
+      })
+    );
+
+    it(
+      'should update plate and return updated list',
+      marbles(m => {
+        const action: Action = updatePlate({
+          payload: { ...mockedPlateItem, plate: 'zxc123' },
+        });
+        const completion = updatePlateSuccess({
+          payload: [{ ...mockedPlateItem, plate: 'zxc123' }],
+        });
+        mockStore.overrideSelector(getPlateList, [mockedPlateItem]);
+        mockStore.refreshState();
+
+        actions$ = m.hot('--a', { a: action });
+        const expected = m.cold('--b', {
+          b: completion,
+        });
+
+        m.expect(effects.updatePlate$).toBeObservable(expected);
       })
     );
   });

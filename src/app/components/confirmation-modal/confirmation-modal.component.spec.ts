@@ -15,7 +15,6 @@ describe('ConfirmationModalComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmationModalComponent],
-      imports: [],
       providers: [
         { provide: MatDialogRef, useValue: mockedDialogRef },
         {
