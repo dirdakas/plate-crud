@@ -52,6 +52,7 @@ describe('PlateListComponent', () => {
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
+    store.overrideSelector(getPlateList, []);
 
     fixture = TestBed.createComponent(PlateListComponent);
     component = fixture.componentInstance;
