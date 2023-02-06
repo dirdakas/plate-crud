@@ -65,6 +65,7 @@ export class PlateListEffects {
   deletePlate$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(deletePlate),
+      switchMap((action: any) => this.plateService.deletePlate(action.payload)),
       withLatestFrom(this.store$.select(getPlateList)),
       map(([item, list]) => {
         return deletePlateSuccess({

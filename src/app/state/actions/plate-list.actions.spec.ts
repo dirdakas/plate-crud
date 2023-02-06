@@ -41,10 +41,10 @@ describe('Store - plate list actions', () => {
   });
 
   it('deletePlate', () => {
-    const action: Action = deletePlate(mockedPlateItem);
+    const action: Action = deletePlate({ payload: mockedPlateItem });
     expect({ ...action }).toEqual({
       type: PlateListTypes.DeletePlate,
-      ...mockedPlateItem,
+      payload: mockedPlateItem,
     } as unknown as Action);
   });
 

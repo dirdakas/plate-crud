@@ -105,7 +105,7 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
       .afterClosed()
       .pipe(
         filter(confirmed => !!confirmed),
-        tap(() => this.store$.dispatch(deletePlate(item)))
+        tap(() => this.store$.dispatch(deletePlate({ payload: item })))
       )
       .subscribe();
   }

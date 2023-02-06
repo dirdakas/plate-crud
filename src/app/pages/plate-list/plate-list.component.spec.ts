@@ -93,7 +93,9 @@ describe('PlateListComponent', () => {
 
       component.deleteItem(mockedPlateItem);
 
-      expect(store.dispatch).toHaveBeenCalledWith(deletePlate(mockedPlateItem));
+      expect(store.dispatch).toHaveBeenCalledWith(
+        deletePlate({ payload: mockedPlateItem })
+      );
     });
 
     it('should not dispatch delete event', () => {
@@ -103,7 +105,7 @@ describe('PlateListComponent', () => {
       component.deleteItem(mockedPlateItem);
 
       expect(store.dispatch).not.toHaveBeenCalledWith(
-        deletePlate(mockedPlateItem)
+        deletePlate({ payload: mockedPlateItem })
       );
     });
   });

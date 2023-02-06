@@ -103,7 +103,7 @@ describe('PlateListEffects', () => {
     it(
       'should remove item from list',
       marbles(m => {
-        const action: Action = deletePlate(mockedPlateItem);
+        const action: Action = deletePlate({ payload: mockedPlateItem });
         const completion = deletePlateSuccess({ payload: [] });
         mockStore.overrideSelector(getPlateList, [mockedPlateItem]);
         mockStore.refreshState();
@@ -120,7 +120,7 @@ describe('PlateListEffects', () => {
     it(
       'should return empty list, since initial list is empty',
       marbles(m => {
-        const action: Action = deletePlate(mockedPlateItem);
+        const action: Action = deletePlate({ payload: mockedPlateItem });
         const completion = deletePlateSuccess({ payload: [] });
         mockStore.overrideSelector(getPlateList, []);
         mockStore.refreshState();

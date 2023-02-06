@@ -92,7 +92,7 @@ describe('plateListReducer', () => {
 
   describe('deletePlate', () => {
     it('should set loading to true', () => {
-      const action: Action = deletePlate(mockedPlateItem);
+      const action: Action = deletePlate({ payload: mockedPlateItem });
       const result: PlateListState = plateListReducer(
         initialPlateListState,
         action
