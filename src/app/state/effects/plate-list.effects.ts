@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
-import { Observable, map, withLatestFrom } from 'rxjs';
+import { Observable, map, withLatestFrom, switchMap } from 'rxjs';
 
 import {
   createPlate,
@@ -14,25 +14,27 @@ import {
   updatePlate,
   updatePlateSuccess,
 } from '../actions';
-import dataFile from 'src/assets/data.json';
 import { IPlateDetails, ITableItem } from 'src/app/models';
 import { PlateListState } from '../reducers';
 import { getPlateList } from '../selectors';
+import { PlateService } from 'src/app/services';
 
 @Injectable()
 export class PlateListEffects {
   constructor(
     private actions$: Actions,
-    private store$: Store<PlateListState>
+    private store$: Store<PlateListState>,
+    private plateService: PlateService
   ) {}
 
   initiatePlateList$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(initiatePlateList),
-      map(() =>
+      switchMap(() => this.plateService.getPlates()),
+      map((plates: IPlateDetails[]) =>
         getPlateListSuccess({
           payload:
-            dataFile.dataList?.map((item: IPlateDetails, index: number) => ({
+            plates?.map((item: IPlateDetails, index: number) => ({
               ...item,
               index,
             })) || [],

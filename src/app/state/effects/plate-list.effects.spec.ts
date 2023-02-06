@@ -3,7 +3,7 @@ import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles';
 
 import { IPlateDetails, ITableItem } from 'src/app/models';
@@ -18,13 +18,16 @@ import {
   updatePlateSuccess,
 } from '../actions';
 import { PlateListEffects } from './plate-list.effects';
-import dataFile from 'src/assets/data.json';
+import dataFile from 'server/db.json';
 import { getPlateList } from '../selectors';
+import { HttpClientModule } from '@angular/common/http';
+import { PlateService } from 'src/app/services';
 
 describe('PlateListEffects', () => {
   let effects: PlateListEffects;
   let actions$: Observable<Action>;
   let mockStore: MockStore<unknown>;
+  let plateService: PlateService;
   const mockedPlateItem: ITableItem = {
     lastName: 'lastName',
     name: 'name',
@@ -34,13 +37,16 @@ describe('PlateListEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientModule],
       providers: [
         PlateListEffects,
         provideMockActions(() => actions$),
         provideMockStore(),
+        PlateService,
       ],
     });
     mockStore = TestBed.inject(MockStore);
+    plateService = TestBed.inject(PlateService);
     effects = TestBed.inject(PlateListEffects);
     actions$ = TestBed.inject(Actions);
     mockStore.refreshState();
@@ -58,10 +64,11 @@ describe('PlateListEffects', () => {
     it(
       'should fetch data and re-map it',
       marbles(m => {
+        spyOn(plateService, 'getPlates').and.returnValue(of(dataFile.plates));
         const action: Action = initiatePlateList();
         const completion = getPlateListSuccess({
           payload:
-            dataFile.dataList?.map((item: IPlateDetails, index: number) => ({
+            dataFile.plates?.map((item: IPlateDetails, index: number) => ({
               ...item,
               index,
             })) || [],

@@ -7,7 +7,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { createPlate, getNewPlateIndex, updatePlate } from 'src/app/state';
 import { EditItemModalComponent } from './edit-item-modal.component';
 
-fdescribe('EditItemModalComponent', () => {
+describe('EditItemModalComponent', () => {
   let component: EditItemModalComponent;
   let fixture: ComponentFixture<EditItemModalComponent>;
   let store: MockStore<unknown>;

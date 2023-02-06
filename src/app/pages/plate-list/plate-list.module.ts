@@ -20,6 +20,8 @@ import {
 import { SpinnerModule, ConfirmationModalModule } from 'src/app/components';
 import { EditItemModalComponent } from './components/edit-item-modal/edit-item-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PlateService } from 'src/app/services';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [PlateListComponent, EditItemModalComponent],
@@ -43,6 +45,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    HttpClientModule,
   ],
+  providers: [PlateService],
 })
 export class PlateListModule {}
