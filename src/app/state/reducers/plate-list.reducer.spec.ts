@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
+import { IPlateDetails } from 'src/app/models';
 
-import { ITableItem } from 'src/app/models';
 import {
   createPlate,
   createPlateSuccess,
@@ -18,11 +18,11 @@ import {
 } from './plate-list.reducer';
 
 describe('plateListReducer', () => {
-  const mockedPlateItem: ITableItem = {
+  const mockedPlateItem: IPlateDetails = {
     lastName: 'lastName',
     name: 'name',
     plate: 'plate',
-    index: 0,
+    id: 0,
   };
 
   describe('unknown action', () => {
@@ -55,7 +55,7 @@ describe('plateListReducer', () => {
   describe('createPlate', () => {
     it('should set loading to true', () => {
       const action: Action = createPlate({ payload: {} } as {
-        payload: ITableItem;
+        payload: IPlateDetails;
       });
       const result: PlateListState = plateListReducer(
         initialPlateListState,
@@ -72,7 +72,7 @@ describe('plateListReducer', () => {
   describe('updatePlate', () => {
     it('should set loading to true', () => {
       const action: Action = updatePlate({ payload: {} } as {
-        payload: ITableItem;
+        payload: IPlateDetails;
       });
       const result: PlateListState = plateListReducer(
         initialPlateListState,

@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { ITableItem } from 'src/app/models';
+import { IPlateDetails } from 'src/app/models';
 import {
   createPlate,
   createPlateSuccess,
@@ -14,11 +14,11 @@ import {
 } from './plate-list.actions';
 
 describe('Store - plate list actions', () => {
-  const mockedPlateItem: ITableItem = {
+  const mockedPlateItem: IPlateDetails = {
     lastName: 'lastName',
     name: 'name',
     plate: 'plate',
-    index: 0,
+    id: 0,
   };
 
   it('initiatePlateList', () => {

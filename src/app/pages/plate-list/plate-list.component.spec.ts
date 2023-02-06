@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { IPlateDetails } from 'src/app/models';
 
-import { ITableItem } from 'src/app/models';
 import { deletePlate, getPlateList, initiatePlateList } from 'src/app/state';
 import { EditItemModalComponent } from './components';
 import { PlateListComponent } from './plate-list.component';
@@ -14,11 +14,11 @@ describe('PlateListComponent', () => {
   let fixture: ComponentFixture<PlateListComponent>;
 
   let store: MockStore<unknown>;
-  const mockedPlateItem: ITableItem = {
+  const mockedPlateItem: IPlateDetails = {
     lastName: 'lastName',
     name: 'name',
     plate: 'plate',
-    index: 0,
+    id: 0,
   };
   const mockedDialog = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

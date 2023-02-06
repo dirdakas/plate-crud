@@ -1,5 +1,5 @@
 export enum TableColumnsEnum {
-  index = 'index',
+  id = 'id',
   plateNumber = 'plateNumber',
   name = 'name',
   lastName = 'lastName',

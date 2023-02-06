@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { createPlate, getNewPlateIndex, updatePlate } from 'src/app/state';
+import { createPlate, updatePlate } from 'src/app/state';
 import { EditItemModalComponent } from './edit-item-modal.component';
 
 describe('EditItemModalComponent', () => {
@@ -31,7 +31,7 @@ describe('EditItemModalComponent', () => {
               plate: 'aaa123',
               name: 'name',
               lastName: 'lastName',
-              index: 0,
+              id: 0,
             },
             currPlates: ['aaa111'],
           },
@@ -153,8 +153,6 @@ describe('EditItemModalComponent', () => {
 
     it('should dispatch create event and close modal', () => {
       spyOn(mockedDialogRef, 'close');
-      store.overrideSelector(getNewPlateIndex, 1);
-      store.refreshState();
 
       component.createNewPlate();
 
@@ -164,7 +162,6 @@ describe('EditItemModalComponent', () => {
           payload: {
             name: 'name',
             lastName: 'lastName',
-            index: 1,
             plate: 'AAA123',
           },
         })
@@ -191,8 +188,6 @@ describe('EditItemModalComponent', () => {
 
     it('should dispatch update event and close modal', () => {
       spyOn(mockedDialogRef, 'close');
-      store.overrideSelector(getNewPlateIndex, 0);
-      store.refreshState();
 
       component.updatePlate();
 
@@ -202,7 +197,7 @@ describe('EditItemModalComponent', () => {
           payload: {
             name: 'name',
             lastName: 'lastName',
-            index: 0,
+            id: 0,
             plate: 'AAA123',
           },
         })

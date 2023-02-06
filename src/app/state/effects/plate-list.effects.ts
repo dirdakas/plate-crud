@@ -14,7 +14,7 @@ import {
   updatePlate,
   updatePlateSuccess,
 } from '../actions';
-import { IPlateDetails, ITableItem } from 'src/app/models';
+import { IPlateDetails } from 'src/app/models';
 import { PlateListState } from '../reducers';
 import { getPlateList } from '../selectors';
 import { PlateService } from 'src/app/services';
@@ -48,9 +48,11 @@ export class PlateListEffects {
       ofType(deletePlate),
       withLatestFrom(this.store$.select(getPlateList)),
       map(([item, list]) => {
-        // @TODO: add removal from file
         return deletePlateSuccess({
-          payload: this.removeItemFromList(item as unknown as ITableItem, list),
+          payload: this.removeItemFromList(
+            item as unknown as IPlateDetails,
+            list
+          ),
         });
       })
     )
@@ -59,11 +61,11 @@ export class PlateListEffects {
   createPlate$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(createPlate),
+      switchMap((action: any) => this.plateService.createPlate(action.payload)),
       withLatestFrom(this.store$.select(getPlateList)),
       map(([item, list]) => {
-        // @TODO: add to file
         return createPlateSuccess({
-          payload: this.getUpdatedList(true, (item as any).payload, list),
+          payload: this.getUpdatedList(true, item as IPlateDetails, list),
         });
       })
     )
@@ -72,38 +74,39 @@ export class PlateListEffects {
   updatePlate$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(updatePlate),
+      switchMap((action: any) => this.plateService.updatePlate(action.payload)),
       withLatestFrom(this.store$.select(getPlateList)),
       map(([item, list]) => {
         // @TODO: update file
         return updatePlateSuccess({
-          payload: this.getUpdatedList(false, (item as any).payload, list),
+          payload: this.getUpdatedList(false, item as IPlateDetails, list),
         });
       })
     )
   );
 
   private removeItemFromList(
-    item: ITableItem,
-    curList: ITableItem[]
-  ): ITableItem[] {
-    return curList.length ? curList.filter(el => el.plate !== item.plate) : [];
+    item: IPlateDetails,
+    curList: IPlateDetails[]
+  ): IPlateDetails[] {
+    return curList.length ? curList.filter(el => el.id !== item.id) : [];
   }
 
   private getUpdatedList(
     isAdd: boolean,
-    item: ITableItem,
-    curList: ITableItem[]
-  ): ITableItem[] {
+    item: IPlateDetails,
+    curList: IPlateDetails[]
+  ): IPlateDetails[] {
     return curList.length
       ? isAdd
         ? [...curList, item]
-        : curList.map(el => (el.index === item.index ? item : el))
+        : curList.map(el => (el.id === item.id ? item : el))
       : [
           {
             plate: item.plate,
             name: item.name,
             lastName: item.lastName,
-            index: item.index,
+            id: item.id,
           },
         ];
   }

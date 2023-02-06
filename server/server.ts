@@ -8,43 +8,6 @@ const fs = require('fs');
 server.use(middlewares);
 server.use(jsonServer.bodyParser);
 
-// server.post('/login', (req, res, next) => {
-//   const users = readUsers();
-
-//   const user = users.filter(
-//     u => u.username === req.body.username && u.password === req.body.password
-//   )[0];
-
-//   if (user) {
-//     res.send({ ...formatUser(user), token: checkIfAdmin(user) });
-//   } else {
-//     res.status(401).send('Incorrect username or password');
-//   }
-// });
-
-// server.post('/register', (req, res) => {
-//   const users = readUsers();
-//   const user = users.filter(u => u.username === req.body.username)[0];
-
-//   if (user === undefined || user === null) {
-//     res.send({
-//       ...formatUser(req.body),
-//       token: checkIfAdmin(req.body),
-//     });
-//     db.users.push(req.body);
-//   } else {
-//     res.status(500).send('User already exists');
-//   }
-// });
-
-// server.use('/plateList', (req, res, next) => {
-//   console.log('/plates');
-//   console.log('req', req);
-//   console.log('res', res);
-//   console.log('next', next);
-//   next();
-// });
-
 function readPlates() {
   const dbRaw = fs.readFileSync('./server/db.json');
   const plates = JSON.parse(dbRaw).plates;
@@ -54,20 +17,49 @@ function readPlates() {
 server.post('/create-plate', (req, res) => {
   console.log('/create-plate', req.body);
   const plates = readPlates();
-  console.log('plates', plates);
-  const plate = plates?.filter(u => u.plate === req.body.plate)[0];
-  console.log('plate', plate);
+  // @TODO: to work with DB const plates = db.plates;
+  const plate = plates.find(el => el.id === req.body.id);
 
   if (plate === undefined || plate === null) {
-    res.send({
+    const newItem = {
       ...req.body,
       id: generateId(),
-    });
-    console.log('db.plates', db.plates);
-    db.plates.push(req.body);
-    console.log('db.plates', db.plates);
+    };
+
+    res.send(newItem);
+    db.plates.push(newItem);
   } else {
     res.status(500).send('Plate already exists');
+  }
+});
+
+server.post('/update-plate', (req, res) => {
+  console.log('/update-plate', req.body);
+  const plates = db.plates;
+  const plate = plates.find(el => el.id === req.body.id);
+
+  if (plate === undefined || plate === null) {
+    res.status(500).send(`Plate does't exists`);
+  } else {
+    res.send({
+      ...req.body,
+    });
+    db.plates.push(req.body);
+  }
+});
+
+server.post('/delete-plate', (req, res) => {
+  console.log('/delete-plate', req.body);
+  const plates = db.plates;
+  const plate = plates.find(el => el.plate === req.body.plate);
+
+  if (plate === undefined || plate === null) {
+    res.status(500).send(`Plate does't exists`);
+  } else {
+    res.send({
+      ...req.body,
+    });
+    db.plates = db.plates.filter(el => el.id !== req.body.plate.id);
   }
 });
 
@@ -80,7 +72,7 @@ const idCreator = function* () {
   const plates = readPlates();
   let i = 0;
   if (plates.length > 0) {
-    i = plates[plates.length - 1].id;
+    i = plates[plates.length - 1].id + 1;
   }
   while (true) yield i++;
 };

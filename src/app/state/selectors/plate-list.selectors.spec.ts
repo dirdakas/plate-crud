@@ -1,6 +1,5 @@
-import { ITableItem } from 'src/app/models';
+import { IPlateDetails } from 'src/app/models';
 import {
-  getNewPlateIndex,
   getPlateList,
   getPlateListState,
   isLoaded,
@@ -8,11 +7,11 @@ import {
 } from './plate-list.selectors';
 
 describe('Plate-List Flow Selectors', () => {
-  const mockedPlate: ITableItem = {
+  const mockedPlate: IPlateDetails = {
     plate: 'plate',
     name: 'name',
     lastName: 'lastName',
-    index: 0,
+    id: 0,
   };
 
   it('getSecurityTokenState should return current slice of state', () => {
@@ -50,16 +49,6 @@ describe('Plate-List Flow Selectors', () => {
       expect(getPlateList.projector({ data: [mockedPlate] })).toEqual([
         mockedPlate,
       ]);
-    });
-  });
-
-  describe('getNewPlateIndex', () => {
-    it('should return new index', () => {
-      expect(
-        getNewPlateIndex.projector({
-          data: [mockedPlate],
-        })
-      ).toEqual(1);
     });
   });
 });

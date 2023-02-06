@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
 import { Subject, takeUntil, Observable, tap, filter } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 
-import { ITableItem, TableColumnsEnum } from 'src/app/models';
+import { IPlateDetails, TableColumnsEnum } from 'src/app/models';
 import {
   deletePlate,
   getPlateList,
@@ -33,13 +33,13 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
   displayedColumns: string[] = [
-    TableColumnsEnum.index,
+    TableColumnsEnum.id,
     TableColumnsEnum.plateNumber,
     TableColumnsEnum.name,
     TableColumnsEnum.lastName,
     TableColumnsEnum.actions,
   ];
-  dataSource = new MatTableDataSource<ITableItem>();
+  dataSource = new MatTableDataSource<IPlateDetails>();
   pageSizeOptions = [5, 10, 20];
   isLoading$: Observable<boolean> = this.store$.pipe(select(isLoading));
   tableColumnsEnum = TableColumnsEnum;
@@ -58,7 +58,7 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         select(getPlateList),
         takeUntil(this.destroy$),
-        tap(list => (this.dataSource.data = list))
+        tap(list => (this.dataSource.data = [...list]))
       )
       .subscribe();
   }
@@ -83,7 +83,7 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe();
   }
 
-  editItem(item: ITableItem): void {
+  editItem(item: IPlateDetails): void {
     this.dialog
       .open(EditItemModalComponent, {
         data: {
@@ -95,7 +95,7 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe();
   }
 
-  deleteItem(item: ITableItem): void {
+  deleteItem(item: IPlateDetails): void {
     this.dialog
       .open(ConfirmationModalComponent, {
         data: {
@@ -112,7 +112,7 @@ export class PlateListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getAllPlates(notToInclude = ''): string[] {
     return [
-      ...this.dataSource.data.reduce((res: string[], curr: ITableItem) => {
+      ...this.dataSource.data.reduce((res: string[], curr: IPlateDetails) => {
         return curr.plate === notToInclude ? res : [...res, curr.plate];
       }, []),
     ];

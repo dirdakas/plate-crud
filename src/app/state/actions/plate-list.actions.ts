@@ -1,7 +1,7 @@
 import { ActionCreator, createAction, props } from '@ngrx/store';
 import { TypedAction } from '@ngrx/store/src/models';
 
-import { ITableItem } from 'src/app/models';
+import { IPlateDetails } from 'src/app/models';
 
 export enum PlateListTypes {
   InitiatePlateList = '[Plate-List] Get plate list',
@@ -22,56 +22,62 @@ export const initiatePlateList: ActionCreator<
 export const getPlateListSuccess: ActionCreator<
   PlateListTypes.GetPlateListSuccess,
   (props: {
-    payload: ITableItem[];
+    payload: IPlateDetails[];
   }) => TypedAction<PlateListTypes.GetPlateListSuccess>
 > = createAction(
   PlateListTypes.GetPlateListSuccess,
-  props<{ payload: ITableItem[] }>()
+  props<{ payload: IPlateDetails[] }>()
 );
 
 export const deletePlate: ActionCreator<
   PlateListTypes.DeletePlate,
-  (props: ITableItem) => TypedAction<PlateListTypes.DeletePlate>
-> = createAction(PlateListTypes.DeletePlate, props<ITableItem>());
+  (props: IPlateDetails) => TypedAction<PlateListTypes.DeletePlate>
+> = createAction(PlateListTypes.DeletePlate, props<IPlateDetails>());
 
 export const deletePlateSuccess: ActionCreator<
   PlateListTypes.DeletePlateSuccess,
   (props: {
-    payload: ITableItem[];
+    payload: IPlateDetails[];
   }) => TypedAction<PlateListTypes.DeletePlateSuccess>
 > = createAction(
   PlateListTypes.DeletePlateSuccess,
   props<{
-    payload: ITableItem[];
+    payload: IPlateDetails[];
   }>()
 );
 
 export const createPlate: ActionCreator<
   PlateListTypes.CreatePlate,
-  (props: { payload: ITableItem }) => TypedAction<PlateListTypes.CreatePlate>
-> = createAction(PlateListTypes.CreatePlate, props<{ payload: ITableItem }>());
+  (props: { payload: IPlateDetails }) => TypedAction<PlateListTypes.CreatePlate>
+> = createAction(
+  PlateListTypes.CreatePlate,
+  props<{ payload: IPlateDetails }>()
+);
 
 export const createPlateSuccess: ActionCreator<
   PlateListTypes.CreatePlateSuccess,
   (props: {
-    payload: ITableItem[];
+    payload: IPlateDetails[];
   }) => TypedAction<PlateListTypes.CreatePlateSuccess>
 > = createAction(
   PlateListTypes.CreatePlateSuccess,
-  props<{ payload: ITableItem[] }>()
+  props<{ payload: IPlateDetails[] }>()
 );
 
 export const updatePlate: ActionCreator<
   PlateListTypes.UpdatePlate,
-  (props: { payload: ITableItem }) => TypedAction<PlateListTypes.UpdatePlate>
-> = createAction(PlateListTypes.UpdatePlate, props<{ payload: ITableItem }>());
+  (props: { payload: IPlateDetails }) => TypedAction<PlateListTypes.UpdatePlate>
+> = createAction(
+  PlateListTypes.UpdatePlate,
+  props<{ payload: IPlateDetails }>()
+);
 
 export const updatePlateSuccess: ActionCreator<
   PlateListTypes.UpdatePlateSuccess,
   (props: {
-    payload: ITableItem[];
+    payload: IPlateDetails[];
   }) => TypedAction<PlateListTypes.UpdatePlateSuccess>
 > = createAction(
   PlateListTypes.UpdatePlateSuccess,
-  props<{ payload: ITableItem[] }>()
+  props<{ payload: IPlateDetails[] }>()
 );

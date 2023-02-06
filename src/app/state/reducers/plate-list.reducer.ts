@@ -7,7 +7,7 @@ import {
   on,
 } from '@ngrx/store';
 
-import { ITableItem } from 'src/app/models';
+import { IPlateDetails } from 'src/app/models';
 import {
   createPlate,
   createPlateSuccess,
@@ -22,7 +22,7 @@ import {
 export interface PlateListState {
   isLoading: boolean;
   isLoaded: boolean;
-  data?: ITableItem[];
+  data?: IPlateDetails[];
 }
 
 export const plateListFeatureKey = 'plate-list';

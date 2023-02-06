@@ -6,7 +6,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Observable, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles';
 
-import { IPlateDetails, ITableItem } from 'src/app/models';
+import { IPlateDetails } from 'src/app/models';
 import {
   createPlate,
   createPlateSuccess,
@@ -27,12 +27,12 @@ describe('PlateListEffects', () => {
   let effects: PlateListEffects;
   let actions$: Observable<Action>;
   let mockStore: MockStore<unknown>;
-  let plateService: PlateService;
-  const mockedPlateItem: ITableItem = {
+  let mockedPlateService;
+  const mockedPlateItem: IPlateDetails = {
     lastName: 'lastName',
     name: 'name',
     plate: 'plate',
-    index: 0,
+    id: 0,
   };
 
   beforeEach(() => {
@@ -46,7 +46,7 @@ describe('PlateListEffects', () => {
       ],
     });
     mockStore = TestBed.inject(MockStore);
-    plateService = TestBed.inject(PlateService);
+    mockedPlateService = TestBed.inject(PlateService);
     effects = TestBed.inject(PlateListEffects);
     actions$ = TestBed.inject(Actions);
     mockStore.refreshState();
@@ -64,7 +64,9 @@ describe('PlateListEffects', () => {
     it(
       'should fetch data and re-map it',
       marbles(m => {
-        spyOn(plateService, 'getPlates').and.returnValue(of(dataFile.plates));
+        spyOn(mockedPlateService, 'getPlates').and.returnValue(
+          of(dataFile.plates)
+        );
         const action: Action = initiatePlateList();
         const completion = getPlateListSuccess({
           payload:
@@ -86,6 +88,12 @@ describe('PlateListEffects', () => {
   });
 
   describe('deletePlate$', () => {
+    beforeEach(() => {
+      spyOn(mockedPlateService, 'deletePlate').and.returnValue(
+        of(mockedPlateItem)
+      );
+    });
+
     it(
       'should remove item from list',
       marbles(m => {
@@ -122,6 +130,12 @@ describe('PlateListEffects', () => {
   });
 
   describe('createPlate$', () => {
+    beforeEach(() => {
+      spyOn(mockedPlateService, 'createPlate').and.returnValue(
+        of(mockedPlateItem)
+      );
+    });
+
     it(
       'should add new plate to the list, initial list is empty',
       marbles(m => {
@@ -163,6 +177,9 @@ describe('PlateListEffects', () => {
     it(
       'should add new plate to the list, initial list is empty (should never be the case)',
       marbles(m => {
+        spyOn(mockedPlateService, 'updatePlate').and.returnValue(
+          of(mockedPlateItem)
+        );
         const action: Action = updatePlate({ payload: mockedPlateItem });
         const completion = updatePlateSuccess({ payload: [mockedPlateItem] });
         mockStore.overrideSelector(getPlateList, []);
@@ -180,6 +197,9 @@ describe('PlateListEffects', () => {
     it(
       'should update plate and return updated list',
       marbles(m => {
+        spyOn(mockedPlateService, 'updatePlate').and.returnValue(
+          of({ ...mockedPlateItem, plate: 'zxc123' })
+        );
         const action: Action = updatePlate({
           payload: { ...mockedPlateItem, plate: 'zxc123' },
         });

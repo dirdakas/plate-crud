@@ -15,12 +15,24 @@ export class PlateService {
     return this.httpClient.get<IPlateDetails[]>(`${SERVER}/plates`);
   }
 
-  // createPlate(plate: IPlateDetails): Observable<any> {
-  //   console.log('createPlate', plate);
-  //   return this.httpClient.post<any>(`${SERVER}/create-plate`, {
-  //     plate: plate.plate,
-  //     name: plate.name,
-  //     lastName: plate.lastName,
-  //   });
-  // }
+  createPlate(plate: IPlateDetails): Observable<IPlateDetails> {
+    console.log('createPlate', plate);
+    return this.httpClient.post<IPlateDetails>(`${SERVER}/create-plate`, {
+      ...plate,
+    });
+  }
+
+  updatePlate(plate: IPlateDetails): Observable<IPlateDetails> {
+    console.log('updatePlate', plate);
+    return this.httpClient.post<IPlateDetails>(`${SERVER}/update-plate`, {
+      ...plate,
+    });
+  }
+
+  deletePlate(plate: IPlateDetails): Observable<IPlateDetails> {
+    console.log('delete', plate);
+    return this.httpClient.post<IPlateDetails>(`${SERVER}/delete-plate`, {
+      ...plate,
+    });
+  }
 }

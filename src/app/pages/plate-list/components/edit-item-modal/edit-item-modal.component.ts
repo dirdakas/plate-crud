@@ -9,21 +9,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { select, Store } from '@ngrx/store';
-import { take, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { ConfirmationModalComponent } from 'src/app/components';
-import { ITableItem } from 'src/app/models';
-import {
-  createPlate,
-  getNewPlateIndex,
-  PlateListState,
-  updatePlate,
-} from 'src/app/state';
+import { IPlateDetails } from 'src/app/models';
+import { createPlate, PlateListState, updatePlate } from 'src/app/state';
 import { PLATE_NUMBER_REGEX } from '../../models';
 
 export interface IEditItem {
-  item?: ITableItem;
+  item?: IPlateDetails;
   currPlates: string[];
 }
 
@@ -43,23 +37,29 @@ export class EditItemModalComponent {
     private store$: Store<PlateListState>
   ) {
     this.plateForm = this.fb.group({
-      plate: new FormControl(this.data ? this.data.item?.plate : '', [
-        Validators.required,
-        Validators.maxLength(6),
-        Validators.minLength(6),
-        this.uniqPlateValidator(),
-        Validators.pattern(PLATE_NUMBER_REGEX),
-      ]),
-      name: new FormControl(this.data ? this.data.item?.name : '', [
-        Validators.required,
-        Validators.minLength(2),
-        this.onlyLettersValidator(),
-      ]),
-      lastName: new FormControl(this.data ? this.data.item?.lastName : '', [
+      plate: new FormControl(
+        this.data?.item ? this.data.item?.plate : 'asd123',
+        [
+          Validators.required,
+          Validators.maxLength(6),
+          Validators.minLength(6),
+          this.uniqPlateValidator(),
+          Validators.pattern(PLATE_NUMBER_REGEX),
+        ]
+      ),
+      name: new FormControl(this.data?.item ? this.data.item?.name : 'asd', [
         Validators.required,
         Validators.minLength(2),
         this.onlyLettersValidator(),
       ]),
+      lastName: new FormControl(
+        this.data?.item ? this.data.item?.lastName : 'asd',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          this.onlyLettersValidator(),
+        ]
+      ),
     });
 
     this.isCreate = !this.data.item;
@@ -67,25 +67,16 @@ export class EditItemModalComponent {
 
   createNewPlate(): void {
     if (this.plateForm.valid) {
-      this.store$
-        .pipe(
-          select(getNewPlateIndex),
-          take(1),
-          tap((index: number) => {
-            this.store$.dispatch(
-              createPlate({
-                payload: {
-                  plate: this.plateForm.value.plate.toUpperCase(),
-                  index,
-                  lastName: this.plateForm.value.lastName,
-                  name: this.plateForm.value.name,
-                },
-              })
-            );
-            this.dialogRef.close();
-          })
-        )
-        .subscribe();
+      this.store$.dispatch(
+        createPlate({
+          payload: {
+            plate: this.plateForm.value.plate.toUpperCase(),
+            lastName: this.plateForm.value.lastName,
+            name: this.plateForm.value.name,
+          },
+        })
+      );
+      this.dialogRef.close();
     } else {
       this.plateForm.markAllAsTouched();
     }
@@ -97,7 +88,7 @@ export class EditItemModalComponent {
         updatePlate({
           payload: {
             plate: this.plateForm.value.plate.toUpperCase(),
-            index: (this.data.item as ITableItem).index,
+            id: (this.data.item as IPlateDetails).id,
             lastName: this.plateForm.value.lastName,
             name: this.plateForm.value.name,
           },
