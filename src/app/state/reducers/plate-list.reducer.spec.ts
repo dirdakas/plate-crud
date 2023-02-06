@@ -3,12 +3,16 @@ import { IPlateDetails } from 'src/app/models';
 
 import {
   createPlate,
+  createPlateFailed,
   createPlateSuccess,
   deletePlate,
+  deletePlateFailed,
   deletePlateSuccess,
   getPlateListSuccess,
   initiatePlateList,
+  initiatePlateListFailed,
   updatePlate,
+  updatePlateFailed,
   updatePlateSuccess,
 } from '../actions';
 import {
@@ -177,6 +181,78 @@ describe('plateListReducer', () => {
         ...initialPlateListState,
         isLoading: false,
         data: [{ ...mockedPlateItem }],
+      });
+    });
+  });
+
+  describe('initiatePlateListFailed', () => {
+    it('should set loading to false', () => {
+      const action: Action = initiatePlateListFailed();
+      const result: PlateListState = plateListReducer(
+        {
+          ...initialPlateListState,
+          isLoading: true,
+        },
+        action
+      );
+
+      expect(result).toEqual({
+        ...initialPlateListState,
+        isLoading: false,
+      });
+    });
+  });
+
+  describe('createPlateFailed', () => {
+    it('should set loading to false', () => {
+      const action: Action = createPlateFailed();
+      const result: PlateListState = plateListReducer(
+        {
+          ...initialPlateListState,
+          isLoading: true,
+        },
+        action
+      );
+
+      expect(result).toEqual({
+        ...initialPlateListState,
+        isLoading: false,
+      });
+    });
+  });
+
+  describe('updatePlateFailed', () => {
+    it('should set loading to false', () => {
+      const action: Action = updatePlateFailed();
+      const result: PlateListState = plateListReducer(
+        {
+          ...initialPlateListState,
+          isLoading: true,
+        },
+        action
+      );
+
+      expect(result).toEqual({
+        ...initialPlateListState,
+        isLoading: false,
+      });
+    });
+  });
+
+  describe('deletePlateFailed', () => {
+    it('should set loading to false', () => {
+      const action: Action = deletePlateFailed();
+      const result: PlateListState = plateListReducer(
+        {
+          ...initialPlateListState,
+          isLoading: true,
+        },
+        action
+      );
+
+      expect(result).toEqual({
+        ...initialPlateListState,
+        isLoading: false,
       });
     });
   });

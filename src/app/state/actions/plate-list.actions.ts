@@ -6,12 +6,16 @@ import { IPlateDetails } from 'src/app/models';
 export enum PlateListTypes {
   InitiatePlateList = '[Plate-List] Get plate list',
   GetPlateListSuccess = '[Plate-List] Get plate list success',
+  GetPlateListFailed = '[Plate-List] Get plate list failed',
   DeletePlate = '[Plate-List] Delete plate',
   DeletePlateSuccess = '[Plate-List] Delete plate success',
+  DeletePlateFailed = '[Plate-List] Delete plate failed',
   CreatePlate = '[Plate-List] Create plate',
   CreatePlateSuccess = '[Plate-List] Create plate success',
+  CreatePlateFailed = '[Plate-List] Create plate failed',
   UpdatePlate = '[Plate-List] Update plate',
   UpdatePlateSuccess = '[Plate-List] Update plate success',
+  UpdatePlateFailed = '[Plate-List] Update plate failed',
 }
 
 export const initiatePlateList: ActionCreator<
@@ -81,3 +85,23 @@ export const updatePlateSuccess: ActionCreator<
   PlateListTypes.UpdatePlateSuccess,
   props<{ payload: IPlateDetails[] }>()
 );
+
+export const initiatePlateListFailed: ActionCreator<
+  PlateListTypes.GetPlateListFailed,
+  () => TypedAction<PlateListTypes.GetPlateListFailed>
+> = createAction(PlateListTypes.GetPlateListFailed);
+
+export const deletePlateFailed: ActionCreator<
+  PlateListTypes.DeletePlateFailed,
+  () => TypedAction<PlateListTypes.DeletePlateFailed>
+> = createAction(PlateListTypes.DeletePlateFailed);
+
+export const createPlateFailed: ActionCreator<
+  PlateListTypes.CreatePlateFailed,
+  () => TypedAction<PlateListTypes.CreatePlateFailed>
+> = createAction(PlateListTypes.CreatePlateFailed);
+
+export const updatePlateFailed: ActionCreator<
+  PlateListTypes.UpdatePlateFailed,
+  () => TypedAction<PlateListTypes.UpdatePlateFailed>
+> = createAction(PlateListTypes.UpdatePlateFailed);

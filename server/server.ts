@@ -16,8 +16,7 @@ function readPlates() {
 
 server.post('/create-plate', (req, res) => {
   console.log('/create-plate', req.body);
-  const plates = readPlates();
-  // @TODO: to work with DB const plates = db.plates;
+  const plates = db.plates;
   const plate = plates.find(el => el.id === req.body.id);
 
   if (plate === undefined || plate === null) {

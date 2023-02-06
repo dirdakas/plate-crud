@@ -10,12 +10,16 @@ import {
 import { IPlateDetails } from 'src/app/models';
 import {
   createPlate,
+  createPlateFailed,
   createPlateSuccess,
   deletePlate,
+  deletePlateFailed,
   deletePlateSuccess,
   getPlateListSuccess,
   initiatePlateList,
+  initiatePlateListFailed,
   updatePlate,
+  updatePlateFailed,
   updatePlateSuccess,
 } from '../actions';
 
@@ -54,6 +58,16 @@ const reducer: ActionReducer<PlateListState, Action> = createReducer(
       ...state,
       isLoading: false,
       data: action.payload,
+    })
+  ),
+  on(
+    initiatePlateListFailed,
+    createPlateFailed,
+    updatePlateFailed,
+    deletePlateFailed,
+    state => ({
+      ...state,
+      isLoading: false,
     })
   )
 );

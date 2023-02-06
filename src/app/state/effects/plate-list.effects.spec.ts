@@ -22,12 +22,14 @@ import dataFile from 'server/db.json';
 import { getPlateList } from '../selectors';
 import { HttpClientModule } from '@angular/common/http';
 import { PlateService } from 'src/app/services';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 describe('PlateListEffects', () => {
   let effects: PlateListEffects;
   let actions$: Observable<Action>;
   let mockStore: MockStore<unknown>;
   let mockedPlateService;
+  let mockedMatSnackBar;
   const mockedPlateItem: IPlateDetails = {
     lastName: 'lastName',
     name: 'name',
@@ -43,10 +45,12 @@ describe('PlateListEffects', () => {
         provideMockActions(() => actions$),
         provideMockStore(),
         PlateService,
+        MatSnackBar,
       ],
     });
     mockStore = TestBed.inject(MockStore);
     mockedPlateService = TestBed.inject(PlateService);
+    mockedMatSnackBar = TestBed.inject(MatSnackBar);
     effects = TestBed.inject(PlateListEffects);
     actions$ = TestBed.inject(Actions);
     mockStore.refreshState();
@@ -67,6 +71,7 @@ describe('PlateListEffects', () => {
         spyOn(mockedPlateService, 'getPlates').and.returnValue(
           of(dataFile.plates)
         );
+        spyOn(mockedMatSnackBar, 'open').and.callThrough();
         const action: Action = initiatePlateList();
         const completion = getPlateListSuccess({
           payload:
@@ -92,6 +97,7 @@ describe('PlateListEffects', () => {
       spyOn(mockedPlateService, 'deletePlate').and.returnValue(
         of(mockedPlateItem)
       );
+      spyOn(mockedMatSnackBar, 'open').and.callThrough();
     });
 
     it(
@@ -134,6 +140,7 @@ describe('PlateListEffects', () => {
       spyOn(mockedPlateService, 'createPlate').and.returnValue(
         of(mockedPlateItem)
       );
+      spyOn(mockedMatSnackBar, 'open').and.callThrough();
     });
 
     it(
@@ -180,6 +187,7 @@ describe('PlateListEffects', () => {
         spyOn(mockedPlateService, 'updatePlate').and.returnValue(
           of(mockedPlateItem)
         );
+        spyOn(mockedMatSnackBar, 'open').and.callThrough();
         const action: Action = updatePlate({ payload: mockedPlateItem });
         const completion = updatePlateSuccess({ payload: [mockedPlateItem] });
         mockStore.overrideSelector(getPlateList, []);
@@ -200,6 +208,7 @@ describe('PlateListEffects', () => {
         spyOn(mockedPlateService, 'updatePlate').and.returnValue(
           of({ ...mockedPlateItem, plate: 'zxc123' })
         );
+        spyOn(mockedMatSnackBar, 'open').and.callThrough();
         const action: Action = updatePlate({
           payload: { ...mockedPlateItem, plate: 'zxc123' },
         });

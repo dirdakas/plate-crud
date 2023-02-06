@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { PlateListComponent } from './plate-list.component';
 import {
@@ -46,6 +47,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatInputModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatSnackBarModule,
   ],
   providers: [PlateService],
 })

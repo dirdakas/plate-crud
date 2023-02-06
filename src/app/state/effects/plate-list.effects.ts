@@ -2,16 +2,28 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
-import { Observable, map, withLatestFrom, switchMap } from 'rxjs';
+import {
+  Observable,
+  map,
+  withLatestFrom,
+  switchMap,
+  catchError,
+  of,
+} from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import {
   createPlate,
+  createPlateFailed,
   createPlateSuccess,
   deletePlate,
+  deletePlateFailed,
   deletePlateSuccess,
   getPlateListSuccess,
   initiatePlateList,
+  initiatePlateListFailed,
   updatePlate,
+  updatePlateFailed,
   updatePlateSuccess,
 } from '../actions';
 import { IPlateDetails } from 'src/app/models';
@@ -24,7 +36,8 @@ export class PlateListEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<PlateListState>,
-    private plateService: PlateService
+    private plateService: PlateService,
+    private _snackBar: MatSnackBar
   ) {}
 
   initiatePlateList$: Observable<Action> = createEffect(() =>
@@ -39,7 +52,13 @@ export class PlateListEffects {
               index,
             })) || [],
         })
-      )
+      ),
+      catchError(err => {
+        this._snackBar.open(err.error, '', {
+          duration: 2000,
+        });
+        return of(initiatePlateListFailed());
+      })
     )
   );
 
@@ -54,6 +73,12 @@ export class PlateListEffects {
             list
           ),
         });
+      }),
+      catchError(err => {
+        this._snackBar.open(err.error, '', {
+          duration: 2000,
+        });
+        return of(deletePlateFailed());
       })
     )
   );
@@ -67,6 +92,12 @@ export class PlateListEffects {
         return createPlateSuccess({
           payload: this.getUpdatedList(true, item as IPlateDetails, list),
         });
+      }),
+      catchError(err => {
+        this._snackBar.open(err.error, '', {
+          duration: 2000,
+        });
+        return of(createPlateFailed());
       })
     )
   );
@@ -77,10 +108,15 @@ export class PlateListEffects {
       switchMap((action: any) => this.plateService.updatePlate(action.payload)),
       withLatestFrom(this.store$.select(getPlateList)),
       map(([item, list]) => {
-        // @TODO: update file
         return updatePlateSuccess({
           payload: this.getUpdatedList(false, item as IPlateDetails, list),
         });
+      }),
+      catchError(err => {
+        this._snackBar.open(err.error, '', {
+          duration: 2000,
+        });
+        return of(updatePlateFailed());
       })
     )
   );
