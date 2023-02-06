@@ -17,7 +17,7 @@ function readPlates() {
 server.post('/create-plate', (req, res) => {
   console.log('/create-plate', req.body);
   const plates = db.plates;
-  const plate = plates.find(el => el.id === req.body.id);
+  const plate = plates.find(el => el.plate === req.body.plate);
 
   if (plate === undefined || plate === null) {
     const newItem = {
@@ -50,7 +50,7 @@ server.post('/update-plate', (req, res) => {
 server.post('/delete-plate', (req, res) => {
   console.log('/delete-plate', req.body);
   const plates = db.plates;
-  const plate = plates.find(el => el.plate === req.body.plate);
+  const plate = plates.find(el => el.id === req.body.id);
 
   if (plate === undefined || plate === null) {
     res.status(500).send(`Plate does't exists`);
