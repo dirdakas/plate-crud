@@ -37,23 +37,20 @@ export class EditItemModalComponent {
     private store$: Store<PlateListState>
   ) {
     this.plateForm = this.fb.group({
-      plate: new FormControl(
-        this.data?.item ? this.data.item?.plate : 'asd123',
-        [
-          Validators.required,
-          Validators.maxLength(6),
-          Validators.minLength(6),
-          this.uniqPlateValidator(),
-          Validators.pattern(PLATE_NUMBER_REGEX),
-        ]
-      ),
-      name: new FormControl(this.data?.item ? this.data.item?.name : 'asd', [
+      plate: new FormControl(this.data?.item ? this.data.item?.plate : '', [
+        Validators.required,
+        Validators.maxLength(6),
+        Validators.minLength(6),
+        this.uniqPlateValidator(),
+        Validators.pattern(PLATE_NUMBER_REGEX),
+      ]),
+      name: new FormControl(this.data?.item ? this.data.item?.name : '', [
         Validators.required,
         Validators.minLength(2),
         this.onlyLettersValidator(),
       ]),
       lastName: new FormControl(
-        this.data?.item ? this.data.item?.lastName : 'asd',
+        this.data?.item ? this.data.item?.lastName : '',
         [
           Validators.required,
           Validators.minLength(2),
