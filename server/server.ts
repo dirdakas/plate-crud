@@ -14,6 +14,13 @@ function readPlates() {
   return plates;
 }
 
+server.get('/plate-list', (req, res) => {
+  console.log('/plate-list');
+  const plates = db.plates || [];
+
+  res.send(plates);
+});
+
 server.post('/create-plate', (req, res) => {
   console.log('/create-plate', req.body);
   const plates = db.plates;

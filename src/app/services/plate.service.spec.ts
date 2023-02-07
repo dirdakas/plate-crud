@@ -38,7 +38,9 @@ describe('PlateService', () => {
       done();
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3000/plates');
+    const req = httpTestingController.expectOne(
+      'http://localhost:3000/plate-list'
+    );
 
     req.flush([mockPlate]);
   });

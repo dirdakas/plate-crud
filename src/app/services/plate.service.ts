@@ -12,7 +12,7 @@ export class PlateService {
   constructor(private httpClient: HttpClient) {}
 
   getPlates(): Observable<IPlateDetails[]> {
-    return this.httpClient.get<IPlateDetails[]>(`${SERVER}/plates`);
+    return this.httpClient.get<IPlateDetails[]>(`${SERVER}/plate-list`);
   }
 
   createPlate(plate: IPlateDetails): Observable<IPlateDetails> {
