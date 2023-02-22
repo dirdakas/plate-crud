@@ -1,4 +1,22 @@
 <div class="edit-item-modal-wrapper">
+  <div *ngIf="isLoading; else CUcontent">
+    <app-spinner></app-spinner>
+  </div>
+
+  <div *ngIf="!isLoading" mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button
+      color="primary"
+      (click)="isCreate ? createNewPlate() : updatePlate()"
+      mat-raised-button
+      mat-dialog-confirm
+      cdkFocusInitial>
+      {{ isCreate ? 'Create' : 'Update' }}
+    </button>
+  </div>
+</div>
+
+<ng-template #CUcontent>
   <h1 mat-dialog-title>
     {{ isCreate ? 'Add new entity' : 'Update existing entity' }}
   </h1>
@@ -80,19 +98,7 @@
       </mat-form-field>
     </form>
   </div>
-
-  <div mat-dialog-actions align="end">
-    <button mat-raised-button mat-dialog-close>Close</button>
-    <button
-      color="primary"
-      (click)="isCreate ? createNewPlate() : updatePlate()"
-      mat-raised-button
-      mat-dialog-confirm
-      cdkFocusInitial>
-      {{ isCreate ? 'Create' : 'Update' }}
-    </button>
-  </div>
-</div>
+</ng-template>
 
 <ng-template #requiredField let-key="key">
   <mat-error

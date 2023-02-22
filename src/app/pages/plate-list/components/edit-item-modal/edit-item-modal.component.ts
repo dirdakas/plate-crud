@@ -1,8 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup,
   ValidationErrors,
   ValidatorFn,
@@ -26,40 +25,22 @@ export interface IEditItem {
   templateUrl: './edit-item-modal.component.html',
   styleUrls: ['./edit-item-modal.component.scss'],
 })
-export class EditItemModalComponent {
-  isCreate = true;
+export class EditItemModalComponent implements OnInit {
   plateForm: FormGroup;
+  isCreate = true;
+  isLoading = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: IEditItem,
     private dialogRef: MatDialogRef<ConfirmationModalComponent>,
     private fb: FormBuilder,
     private store$: Store<PlateListState>
-  ) {
-    this.plateForm = this.fb.group({
-      plate: new FormControl(this.data?.item ? this.data.item?.plate : '', [
-        Validators.required,
-        Validators.maxLength(6),
-        Validators.minLength(6),
-        this.uniqPlateValidator(),
-        Validators.pattern(PLATE_NUMBER_REGEX),
-      ]),
-      name: new FormControl(this.data?.item ? this.data.item?.name : '', [
-        Validators.required,
-        Validators.minLength(2),
-        this.onlyLettersValidator(),
-      ]),
-      lastName: new FormControl(
-        this.data?.item ? this.data.item?.lastName : '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          this.onlyLettersValidator(),
-        ]
-      ),
-    });
+  ) {}
 
+  ngOnInit(): void {
     this.isCreate = !this.data.item;
+
+    this.initForm();
   }
 
   createNewPlate(): void {
@@ -95,6 +76,39 @@ export class EditItemModalComponent {
     } else {
       this.plateForm.markAllAsTouched();
     }
+  }
+
+  private initForm(): void {
+    this.plateForm = this.fb.group({
+      plate: [
+        this.data?.item ? this.data.item?.plate : '',
+        [
+          Validators.required,
+          Validators.maxLength(6),
+          Validators.minLength(6),
+          this.uniqPlateValidator(),
+          Validators.pattern(PLATE_NUMBER_REGEX),
+        ],
+      ],
+      name: [
+        this.data?.item ? this.data.item?.name : '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          this.onlyLettersValidator(),
+        ],
+      ],
+      lastName: [
+        this.data?.item ? this.data.item?.lastName : '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          this.onlyLettersValidator(),
+        ],
+      ],
+    });
+
+    this.isLoading = false;
   }
 
   private uniqPlateValidator(): ValidatorFn {
