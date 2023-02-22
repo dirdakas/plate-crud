@@ -30,126 +30,130 @@
           placeholder="AAA123"
           formControlName="plate"
           maxlength="6" />
-        <ng-container
-          *ngTemplateOutlet="
-            requiredField;
-            context: { key: 'plate' }
-          "></ng-container>
-        <ng-container
-          *ngTemplateOutlet="
-            notUniqPlate;
-            context: { key: 'plate' }
-          "></ng-container>
-        <ng-container
-          *ngTemplateOutlet="
-            fieldMinLength;
-            context: { key: 'plate', count: 6 }
-          "></ng-container>
-        <ng-container
-          *ngTemplateOutlet="
-            fieldMaxLength;
-            context: { key: 'plate', count: 6 }
-          "></ng-container>
-        <ng-container
-          *ngTemplateOutlet="
-            notPlate;
-            context: { key: 'plate' }
-          "></ng-container>
+        <mat-error
+          *ngIf="
+            plateForm.get('plate')?.hasError('required') &&
+            plateForm.get('plate')?.touched
+          ">
+          <ng-container *ngTemplateOutlet="requiredField"></ng-container>
+        </mat-error>
+        <mat-error
+          *ngIf="
+            plateForm.get('plate')?.hasError('notUniq') &&
+            plateForm.get('plate')?.touched
+          ">
+          <ng-container *ngTemplateOutlet="notUniqPlate"></ng-container>
+        </mat-error>
+        <mat-error
+          *ngIf="
+            plateForm.get('plate')?.hasError('minlength') &&
+            plateForm.get('plate')?.touched
+          ">
+          <ng-container
+            *ngTemplateOutlet="
+              fieldMinLength;
+              context: { count: 6 }
+            "></ng-container>
+        </mat-error>
+        <mat-error
+          *ngIf="
+            plateForm.get('plate')?.hasError('maxlength') &&
+            plateForm.get('plate')?.touched
+          ">
+          <ng-container
+            *ngTemplateOutlet="
+              fieldMaxLength;
+              context: { count: 6 }
+            "></ng-container>
+        </mat-error>
+        <mat-error
+          *ngIf="
+            plateForm.get('plate')?.hasError('pattern') &&
+            plateForm.get('plate')?.touched
+          ">
+          <ng-container *ngTemplateOutlet="notPlate"></ng-container>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>First name:</mat-label>
         <input matInput placeholder="Vardenis" formControlName="name" />
-        <ng-container
-          *ngTemplateOutlet="
-            requiredField;
-            context: { key: 'name' }
-          "></ng-container>
-        <ng-container
-          *ngTemplateOutlet="
-            fieldMinLength;
-            context: { key: 'name', count: 2 }
-          "></ng-container>
-        <ng-container
-          *ngTemplateOutlet="
-            notLetters;
-            context: { key: 'name' }
-          "></ng-container>
+        <mat-error
+          *ngIf="
+            plateForm.get('name')?.hasError('required') &&
+            plateForm.get('name')?.touched
+          ">
+          <ng-container *ngTemplateOutlet="requiredField"></ng-container>
+        </mat-error>
+        <mat-error
+          *ngIf="
+            plateForm.get('name')?.hasError('minlength') &&
+            plateForm.get('name')?.touched
+          ">
+          <ng-container
+            *ngTemplateOutlet="
+              fieldMinLength;
+              context: { count: 2 }
+            "></ng-container>
+        </mat-error>
+        <mat-error
+          *ngIf="
+            plateForm.get('name')?.hasError('notLetters') &&
+            plateForm.get('name')?.touched
+          ">
+          <ng-container *ngTemplateOutlet="notLetters"></ng-container>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Last name:</mat-label>
         <input matInput placeholder="Pavardenis" formControlName="lastName" />
-        <ng-container
-          *ngTemplateOutlet="
-            requiredField;
-            context: { key: 'lastName' }
-          "></ng-container>
-        <ng-container
-          *ngTemplateOutlet="
-            fieldMinLength;
-            context: { key: 'lastName', count: 2 }
-          "></ng-container>
-        <ng-container
-          *ngTemplateOutlet="
-            notLetters;
-            context: { key: 'lastName' }
-          "></ng-container>
+        <mat-error
+          *ngIf="
+            plateForm.get('lastName')?.hasError('required') &&
+            plateForm.get('lastName')?.touched
+          ">
+          <ng-container *ngTemplateOutlet="requiredField"></ng-container>
+        </mat-error>
+        <mat-error
+          *ngIf="
+            plateForm.get('lastName')?.hasError('minlength') &&
+            plateForm.get('lastName')?.touched
+          ">
+          <ng-container
+            *ngTemplateOutlet="
+              fieldMinLength;
+              context: { count: 2 }
+            "></ng-container>
+        </mat-error>
+        <mat-error
+          *ngIf="
+            plateForm.get('lastName')?.hasError('notLetters') &&
+            plateForm.get('lastName')?.touched
+          ">
+          <ng-container *ngTemplateOutlet="notLetters"></ng-container>
+        </mat-error>
       </mat-form-field>
     </form>
   </div>
 </ng-template>
 
-<ng-template #requiredField let-key="key">
-  <mat-error
-    *ngIf="
-      plateForm.get(key)?.hasError('required') && plateForm.get(key)?.touched
-    ">
-    Field is required
-  </mat-error>
+<ng-template #requiredField> Field is required </ng-template>
+
+<ng-template #notUniqPlate> Field should be uniq </ng-template>
+
+<ng-template #fieldMinLength let-count="count">
+  Field must contain atleast {{ count }} letters
 </ng-template>
 
-<ng-template #notUniqPlate let-key="key">
-  <mat-error
-    *ngIf="
-      plateForm.get(key)?.hasError('notUniq') && plateForm.get(key)?.touched
-    ">
-    Field should be uniq
-  </mat-error>
-</ng-template>
-
-<ng-template #fieldMinLength let-key="key" let-count="count">
-  <mat-error
-    *ngIf="
-      plateForm.get(key)?.hasError('minlength') && plateForm.get(key)?.touched
-    ">
-    Field must contain atleast {{ count }} letters
-  </mat-error>
-</ng-template>
-
-<ng-template #fieldMaxLength let-key="key" let-count="count">
-  <mat-error
-    *ngIf="
-      plateForm.get(key)?.hasError('maxlength') && plateForm.get(key)?.touched
-    ">
-    Field must contain no more than {{ count }} letters
-  </mat-error>
+<ng-template #fieldMaxLength let-count="count">
+  Field must contain no more than {{ count }} letters
 </ng-template>
 
 <ng-template #notLetters let-key="key">
-  <mat-error
-    *ngIf="
-      plateForm.get(key)?.hasError('notLetters') && plateForm.get(key)?.touched
-    ">
-    Field must contain only letters
-  </mat-error>
+  Field must contain only letters
 </ng-template>
 
 <ng-template #notPlate let-key="key">
-  <mat-error
-    *ngIf="
-      plateForm.get(key)?.hasError('pattern') && plateForm.get(key)?.touched
-    ">
-    Plate should be 3 letters and 3 numbers
-  </mat-error>
+  Plate should be 3 letters and 3 numbers
 </ng-template>
