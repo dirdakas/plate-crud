@@ -14,17 +14,17 @@ function readPlates() {
   return plates;
 }
 
-server.get('/plate-list', (req, res) => {
+server.get('/plate-list', (req: any, res: any) => {
   console.log('/plate-list');
   const plates = db.plates || [];
 
   res.send(plates);
 });
 
-server.post('/create-plate', (req, res) => {
+server.post('/create-plate', (req: any, res: any) => {
   console.log('/create-plate', req.body);
   const plates = db.plates;
-  const plate = plates.find(el => el.plate === req.body.plate);
+  const plate = plates.find((el: any) => el.plate === req.body.plate);
 
   if (plate === undefined || plate === null) {
     const newItem = {
@@ -39,10 +39,10 @@ server.post('/create-plate', (req, res) => {
   }
 });
 
-server.post('/update-plate', (req, res) => {
+server.post('/update-plate', (req: any, res: any) => {
   console.log('/update-plate', req.body);
   const plates = db.plates;
-  const plate = plates.find(el => el.id === req.body.id);
+  const plate = plates.find((el: any) => el.id === req.body.id);
 
   if (plate === undefined || plate === null) {
     res.status(500).send(`Plate does't exists`);
@@ -54,10 +54,10 @@ server.post('/update-plate', (req, res) => {
   }
 });
 
-server.post('/delete-plate', (req, res) => {
+server.post('/delete-plate', (req: any, res: any) => {
   console.log('/delete-plate', req.body);
   const plates = db.plates;
-  const plate = plates.find(el => el.id === req.body.id);
+  const plate = plates.find((el: any) => el.id === req.body.id);
 
   if (plate === undefined || plate === null) {
     res.status(500).send(`Plate does't exists`);
@@ -65,7 +65,7 @@ server.post('/delete-plate', (req, res) => {
     res.send({
       ...req.body,
     });
-    db.plates = db.plates.filter(el => el.id !== req.body.plate.id);
+    db.plates = db.plates.filter((el: any) => el.id !== req.body.plate.id);
   }
 });
 

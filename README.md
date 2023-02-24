@@ -12,8 +12,8 @@ Run `npm run server`. Navigate to `http://localhost:3000/` on browser
 
 ## Run FE locally
 
-Run `npm run start`. Navigate to `http://localhost:4200/` on browser
+Run `npm run start:plate-crud`. Navigate to `http://localhost:4200/` on browser
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm run test:plate-crud` to execute the unit tests via [Karma](https://karma-runner.github.io).
